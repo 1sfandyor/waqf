@@ -1170,9 +1170,12 @@ ul.list li:before {
 }
 /* 13. courses */
 .courses {
+    display: flex;
+    flex-direction: column;
     width: 97%;
+    height: 100%;
     background-color: #fff;
-        border-top-left-radius: 200px;
+    border-top-left-radius: 200px;
     border-top-right-radius: 200px;
 }
 .courses-img {
@@ -1239,7 +1242,7 @@ ul.list li:before {
 }
 .courses-text {
     width: 85%;
-    margin: auto;
+    margin: 0 auto;
 }
 .courses-text a {
     font-size: 22px;
