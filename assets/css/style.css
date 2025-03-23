@@ -633,6 +633,22 @@ li.menu-item-has-children.active {
     padding-bottom: 200px;
     height: 100vh;
 }
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
 .hero-text,.hero-img {
     position: relative;
 }
@@ -973,7 +989,7 @@ span.flaticon-multiply i {
     border: 4px solid var(--theme-colour);
 }
 .namaz-time h4 {
-    font-size: 36px;
+    font-size: 26px;
     color: var(--common-colour);
     padding-top: 6px;
     padding-bottom: 20px;
@@ -987,7 +1003,7 @@ span.flaticon-multiply i {
 }
 .namaz-time h5 {
     position: relative;
-    font-size: 20px;
+    font-size: 18px;
 }
 .namaz-time:hover:before {
     bottom: 0;
@@ -1084,6 +1100,8 @@ ul.list li:before {
 .real-history-book img {
     border-bottom-left-radius: 150px;
     border-bottom-right-radius: 150px;
+    object-position: center;
+    object-fit: cover;
 }
 .real-history-book.two {
     margin-top: 0px;
@@ -1172,6 +1190,8 @@ ul.list li:before {
     border-top-left-radius: 200px;
     border-top-right-radius: 200px;
     width: 100%;
+    height: 395px;
+    object-fit: cover;
 }
 .courses-img:before {
     background-color: var(--common-colour);
@@ -1432,6 +1452,9 @@ ul.list li:before {
     border-radius: 127px;
     border-bottom-left-radius: 0;
     border : 1px solid #bcbcbc;
+    width: 232px;
+    height: 433px;
+    text-overflow: ellipsis;
 }
 .pillars-name figure {
     background-color: var(--theme-colour);
@@ -1445,11 +1468,11 @@ ul.list li:before {
 }
 .pillars-name {
     position: relative;
-    padding-bottom: 30px;
 }
 .pillars-name img {
     border-radius: 127px;
     border-bottom-left-radius: 0;
+    object-fit: cover;
 }
 .pillars-name:hover figure img {
     -webkit-animation: top-bottom 1s ease-in-out ;
@@ -1461,12 +1484,13 @@ ul.list li:before {
     padding-left: 20px;
 }
 .pillars-name a {
-    font-size: 26px;
+    font-size: large;
     font-family: var(--common-font);
     display: block;
     padding-top: 17px;
     padding-bottom: 4px;
-    padding-left: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .pillars-name a:hover {
     color: var(--common-colour);

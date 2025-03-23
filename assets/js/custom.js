@@ -29,7 +29,7 @@ jQuery(document).ready(function($){
         loop:true,
         arrows:false,
         autoplay:true,
-        autoplayTimeout:4000,
+        autoplayTimeout:100000,
         items:1
       })
 /***--------  02. slider-ayat   ------- ***/
