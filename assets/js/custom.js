@@ -209,7 +209,7 @@ if(jQuery("#days").length){
           mm = String(today.getMonth() + 1).padStart(2, "0"),
           yyyy = today.getFullYear(),
           nextYear = yyyy + 1,
-          dayMonth = "2/21/",
+          dayMonth = "6/6/",
           birthday = dayMonth + yyyy;
       
       today = mm + "/" + dd + "/" + yyyy;
