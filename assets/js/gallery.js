@@ -2,41 +2,182 @@
 const galleryImages = [
     {
       id: 1,
-      src: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=800&q=80",
+      src: "/assets/img/gallery/1.JPG",
       alt: "Vaqf tashkiliy ishlari",
       category: "events"
     },
     {
       id: 2,
-      src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
+      src: "/assets/img/gallery/2.JPG",
       alt: "Seminar",
       category: "events"
     },
     {
       id: 3,
-      src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80", 
+      src: "/assets/img/gallery/3.jpg", 
       alt: "Media faoliyati",
-      category: "media"
+      category: "events"
     },
     {
       id: 4,
-      src: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=800&q=80",
+      src: "/assets/img/gallery/4.jpg",
       alt: "Konferensiya",
       category: "events"
     },
     {
       id: 5,
-      src: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
+      src: "/assets/img/gallery/5.jpg",
       alt: "Talim jarayoni",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/6.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/7.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/8.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/9.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/10.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/11.jpeg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/12.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/13.jpg",
+      alt: "Kompyuter darsi",
+      category: "events"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/14.JPG",
+      alt: "Kompyuter darsi",
       category: "education"
     },
     {
       id: 6,
-      src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80",
+      src: "/assets/img/gallery/15.JPG",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/16.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/17.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/18.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/19.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/20.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/21.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/22.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/23.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/24.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/25.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/26.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/27.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/28.jpg",
+      alt: "Kompyuter darsi",
+      category: "education"
+    },
+    {
+      id: 6,
+      src: "/assets/img/gallery/29.JPG",
       alt: "Kompyuter darsi",
       category: "education"
     }
   ];
+
+
+  
   
   // DOM Elements
   const gallery = document.getElementById('gallery');
