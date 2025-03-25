@@ -1211,7 +1211,7 @@ ul.list li:before {
     object-fit: cover;
 }
 .courses-img:before {
-    background-color: var(--common-colour);
+    background-color: var(--theme-colour);
     content: "";
     opacity: .5;
     position: absolute;
@@ -1231,7 +1231,7 @@ ul.list li:before {
     justify-content: center;
     display: flex;
     border-radius: 50%;
-    border: solid 3px var(--theme-colour);
+    border: solid 3px var(--common-colour);
 }
 .courses-img a i {
     color: #fff;
@@ -1242,7 +1242,7 @@ ul.list li:before {
     justify-content: center;
     display: flex;
     border-radius: 50%;
-    border: solid 3px var(--theme-colour);
+    border: solid 3px var(--common-colour);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) rotate(323deg) scale(0);
@@ -1252,7 +1252,7 @@ ul.list li:before {
 }
 .courses .courses-img a i:hover {
     transform: translate(-50%, -50%) rotate(0deg) scale(1);
-    background-color: var(--theme-colour);
+    background-color: var(--common-colour);
 }
 .courses-text {
     width: 85%;
