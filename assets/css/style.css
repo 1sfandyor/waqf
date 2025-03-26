@@ -4285,7 +4285,11 @@ ul.client-info h5 {
 /* 78. campaigns-text */
 .campaigns {
     width: 97%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
+
 .campaigns:hover .donate-now figure:before {
     height: 100%;
 }
@@ -4328,6 +4332,7 @@ ul.client-info h5 {
     border: 1px solid #c1c1c1;
     padding-top: 160px;
     margin-bottom: 40px;
+    flex-grow: 1;
 }
 /* 79. donate-now */
 .donate-now {
