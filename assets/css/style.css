@@ -951,9 +951,11 @@ span.flaticon-multiply i {
     position: relative;
 }
 .namaz-time {
+    display: inline-block;
     text-align: center;
     width: 17%;
     padding-top: 36px;
+    background-color: var(--theme-colour);
     border: 1px solid #bcbcbc;
     border-bottom-left-radius: 150px;
     border-bottom-right-radius: 151px;
@@ -1488,6 +1490,14 @@ ul.list li:before {
 }
 .pillars-name img {
     border-radius: 127px;
+    border-bottom-left-radius: 0;
+    object-fit: cover;
+}
+
+
+
+.pillars-name figure img {
+    border-radius: 0;
     border-bottom-left-radius: 0;
     object-fit: cover;
 }
