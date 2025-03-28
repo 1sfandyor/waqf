@@ -973,7 +973,7 @@ span.flaticon-multiply i {
     justify-content: space-between;
 }
 .namaz-time:before {
-    background-color: #fff;
+    background-color: var(--theme-colour);
     content: "";
     position: absolute;
     top: 0;
@@ -1113,6 +1113,7 @@ ul.list li:before {
     margin-top: 50px;
 }
 .real-history-book img {
+    width: 100%;
     border-bottom-left-radius: 150px;
     border-bottom-right-radius: 150px;
     object-position: center;
@@ -1468,11 +1469,13 @@ ul.list li:before {
 }
 /* 19. pillars */
 .pillars-name {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
     border-radius: 127px;
     border-bottom-left-radius: 0;
     border : 1px solid #bcbcbc;
     width: 232px;
-    height: 433px;
     text-overflow: ellipsis;
 }
 .pillars-name figure {
@@ -1511,7 +1514,7 @@ ul.list li:before {
     padding-left: 20px;
 }
 .pillars-name a {
-    font-size: large;
+    font-size: small;
     font-family: var(--common-font);
     display: block;
     padding-top: 17px;
@@ -1522,9 +1525,16 @@ ul.list li:before {
 .pillars-name a:hover {
     color: var(--common-colour);
 }
+
+.pillars-name div{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 .pillars {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
 }
 /* 20. count-style */
@@ -3480,14 +3490,7 @@ li.prev {
     line-height: 50px;
 }
 
-.drop-caps-work p:first-letter {
-    font-size: 110px;
-    float: left;
-    line-height: 1;
-    font-weight: bold;
-    color: #444;
-    margin-right: 40px
-}
+
 .drop-caps-work p {
     font-size: 18px;
 }
