@@ -176,9 +176,6 @@ const galleryImages = [
     }
   ];
 
-
-  
-  
   // DOM Elements
   const gallery = document.getElementById('gallery');
   const filterButtons = document.querySelectorAll('.filter-button');

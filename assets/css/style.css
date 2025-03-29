@@ -1567,6 +1567,7 @@ ul.list li:before {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
+    padding-bottom: 40px;
 }
 @keyframes top {
     0% {

@@ -28,6 +28,7 @@
 
 .slide {
   width: 33.33%;
+  height: 700px;
   position: relative;
 }
 
@@ -164,7 +165,25 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  height: calc((100% - 30px) / 3); /* Equal height for each side article */
+  height: calc((100% - 30px) / 3); 
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.side-article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.side-article-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  text-decoration: none;
+  color: inherit;
 }
 
 .side-article-content {
