@@ -973,7 +973,7 @@ span.flaticon-multiply i {
     justify-content: space-between;
 }
 .namaz-time:before {
-    background-color: var(--theme-colour);
+    background-color: #feffd0;
     content: "";
     position: absolute;
     top: 0;
@@ -3490,10 +3490,10 @@ li.prev {
     line-height: 50px;
 }
 
-
 .drop-caps-work p {
     font-size: 18px;
 }
+
 /* 64. post-tags */
 .post-tags {
     border-radius: 50px;
