@@ -668,7 +668,7 @@ li.menu-item-has-children.active {
     font-weight: bold;
 }
 .hero-text h1 {
-    font-size: 60px;
+    font-size: 50px;
     color: #fff;
     font-weight: 300;
     padding-bottom: 10px;
@@ -973,7 +973,7 @@ span.flaticon-multiply i {
     justify-content: space-between;
 }
 .namaz-time:before {
-    background-color: #feffd0;
+    background-color: white;
     content: "";
     position: absolute;
     top: 0;
@@ -981,6 +981,12 @@ span.flaticon-multiply i {
     width: 100%;
     height: 100%;
 }
+
+.yellow-bg:before {
+    background-color: #fbaf0b;
+    content: "";
+}
+
 .namaz-time:after {
     left: 44%;
     bottom: 40px;
@@ -1469,6 +1475,7 @@ ul.list li:before {
 }
 /* 19. pillars */
 .pillars-name {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
@@ -1478,6 +1485,18 @@ ul.list li:before {
     width: 232px;
     text-overflow: ellipsis;
 }
+
+.pillars-link{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    border-radius: 127px;
+    border-bottom-left-radius: 0;
+}
+
 .pillars-name figure {
     background-color: var(--theme-colour);
     width: 100px;
@@ -1513,7 +1532,7 @@ ul.list li:before {
     font-family: var(--common-font);
     padding-left: 20px;
 }
-.pillars-name a {
+.pillars-name p {
     font-size: small;
     font-family: var(--common-font);
     display: block;
@@ -1526,17 +1545,20 @@ ul.list li:before {
     color: var(--common-colour);
 }
 
-.pillars-name div{
-    flex-grow: 1;
+.pillars-content {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: auto;
+    flex-grow: 1;
 }
+
 .pillars {
     display: flex;
     align-items: stretch;
     justify-content: space-between;
 }
+
 /* 20. count-style */
 .count-style h2 {
     font-size: 80px;
