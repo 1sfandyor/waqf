@@ -987,6 +987,11 @@ span.flaticon-multiply i {
     content: "";
 }
 
+.yellow-bg::after {
+    background-color: #fbaf0b;
+    content: "";
+}
+
 .namaz-time:after {
     left: 44%;
     bottom: 40px;
