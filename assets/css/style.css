@@ -1410,6 +1410,7 @@ ul.list li:before {
     font-size: 46px;
     font-family: var(--common-font);
     padding-bottom: 20px;
+    font-weight: bold;
 }
 .support-us {
     padding: 50px;
