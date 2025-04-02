@@ -1539,6 +1539,7 @@ ul.list li:before {
 }
 .pillars-name p {
     font-size: small;
+    font-weight: bold;
     font-family: var(--common-font);
     display: block;
     padding-top: 17px;

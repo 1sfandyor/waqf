@@ -332,6 +332,7 @@
   }
 
   .side-article-desc {
+      line-height: 21px;
       font-size: 13px;
       margin-bottom: 8px;
   }
