@@ -1,4 +1,5 @@
 .author-name {
+  font-family: var(--common-font);
   font-size: 36px;
   font-weight: 600;
   margin-bottom: 10px;
@@ -194,8 +195,9 @@
 }
 
 .side-article-title {
+  font-family: var(--common-font);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 6px;
   color: #333;
 }

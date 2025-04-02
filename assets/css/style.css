@@ -952,7 +952,6 @@ span.flaticon-multiply i {
     text-align: center;
     width: 17%;
     padding-top: 36px;
-    background-color: var(--theme-colour);
     border: 1px solid #bcbcbc;
     border-bottom-left-radius: 150px;
     border-bottom-right-radius: 151px;
@@ -984,10 +983,7 @@ span.flaticon-multiply i {
     content: "";
 }
 
-.yellow-bg::after {
-    background-color: #fbaf0b;
-    content: "";
-}
+
 
 .namaz-time:after {
     left: 44%;
@@ -999,6 +995,20 @@ span.flaticon-multiply i {
     border-radius: 50%;
     border: 4px solid var(--theme-colour);
 }
+
+.yellow-bg:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 4px solid white;
+}
+
+.yellow-bg:hover:after {
+    border-color: #fbaf0b;
+}
+
+
 .namaz-time h4 {
     font-size: 26px;
     color: var(--common-colour);
@@ -1404,7 +1414,7 @@ ul.list li:before {
 }
 .support-us h4 {
     color: #fff;
-    font-size: 46px;
+    font-size: 50px;
     padding-bottom: 20px;
     font-weight: bold;
 }
@@ -1555,7 +1565,9 @@ ul.list li:before {
     height: auto;
     flex-grow: 1;
 }
-
+.pillars-content p{
+    text-transform: capitalize;
+}
 .pillars {
     display: flex;
     align-items: stretch;
@@ -4508,7 +4520,9 @@ span#progress-value i {
     }
   }
 
-  
+.zed{
+    z-index: 9999;
+}
 /* transition */
 .scholars.scholars-details ul.social-media a i,.donate-now a,.widget-title a,
 .blog-two h5 a,ul.image-gallery li figure:before,.audio-ayat .owl-nav i,.recent-post a,ul.categories li a,
