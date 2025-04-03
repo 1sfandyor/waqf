@@ -136,9 +136,7 @@
   .blog-man img {
     width: auto !important;
   }
-  .comment h3 {
-    font-size: 36px;
-  }
+  
   .namaz-timing-schedule {
     padding: 25px;
     padding-top: 50px;
@@ -716,9 +714,6 @@
   .scholars.scholars-details .opening-time.hoverimg figure {
     width: 100%;
   }
-  .comment h3 {
-    font-size: 32px;
-  }
   .scholars.scholars-details ul.social-media {
     right: 5%;
     top: 57%;
@@ -765,14 +760,8 @@
     height: 172px;
     width: 100%;
   }
-  .post-tags {
-    margin-top: 30px;
-  }
   .sidebar h3 {
     font-size: 24px;
-  }
-  .single-comment {
-    padding: 12px;
   }
   .hero-section.two .hero-text {
     width: 100%;
@@ -1008,9 +997,6 @@
   .map iframe {
     height: 300px;
   }
-  li.single-comment img {
-    margin-right: 16px;
-  }
 	.hero-section {
     padding-top: 70px;
     padding-bottom: 80px;
@@ -1025,34 +1011,15 @@
     width: 156px;
     height: 130px;
   }
-  .post-tags {
-    margin-top: 30px;
-    flex-wrap: wrap;
-    padding-top: 20px;
-  }
+
   .img-navigating {
     margin-bottom: 20px;
-  }
-  .single-comment {
-    padding: 12px;
-    flex-wrap: wrap;
-    border-radius: 0;
-    border-top-left-radius: 80px;
-  }
-  li.single-comment img {
-    margin-right: 0;
-    margin-bottom: 20px;
-  }
-  .comment h4 {
-    font-size: 22px;
   }
   ul.photo-gallery img {
     height: 130px;
     width: 100%;
   }
-  .post-tags ul.tags {
-    margin-bottom: 17px;
-  }
+
   .masjid:before {
     width: 120px;
     height: 120px;
@@ -1124,9 +1091,6 @@
 	.widget-title p {
     width: 100%;
 	}
-  .leave-comment .btn {
-    margin-top: 20px;
-  }
 }
 @media(max-width: 600px){}
 @media(max-width: 576px){
@@ -1245,12 +1209,6 @@
   }
 }
 @media(max-width: 500px){
-  .comment h3 {
-    font-size: 28px;
-  }
-  .post-tags ul.tags {
-    flex-wrap: wrap;
-  }
   .sidebar {
     padding: 30px;
   }
@@ -1287,9 +1245,6 @@
   ul.star li i {
     font-size: 14px;
   }
-  li.single-comment.children {
-    margin-left: 20px;
-  }
   .error h3 {
     font-size: 24px;
   }
@@ -1324,11 +1279,7 @@
   ul.photo-gallery img {
     height: 100px;
   }
-  .post-tags ul.tags li a {
-    margin-bottom: 4px;
-    padding: 8px 10px;
-    display: block;
-  }
+
   .bannr-text h2 {
     padding-top: 10px;
     font-size: 36px;
@@ -1555,9 +1506,6 @@
   ul.photo-gallery img {
     height: 80px;
     width: 100%;
-  }
-  .single-comment span {
-    font-size: 13px;
   }
   .upcoming-event #countdown {
     left: 12%;
