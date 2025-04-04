@@ -203,13 +203,35 @@
         <div class="container">
             <div class="bannr-text">
                 <img src="assets/images/heading-img.png" alt="icon" width="100" height="132.5">
-                <h2>Duyurular</h2>
+                <h2>
+                    <% if (category === 'news') { %>
+                        Duyurular
+                    <% } else if (category === 'notes') { %>
+                        Bildiriler
+                    <% } else if (category === 'future_project') { %>
+                        Gelecek projelerimiz
+                    <% } else { %>
+                        Haberler
+                    <% } %>
+                </h2>
             </div>
         </div>
     </section>
     
     <section class="gap">
         <div class="container">
+            <!-- Kategoriya filtri tugmalari -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center flex-wrap">
+                        <a href="/news" class="btn <%= category === 'all' ? 'btn-primary' : 'btn-outline-primary' %> m-1">Hamma</a>
+                        <a href="/news?category=news" class="btn <%= category === 'news' ? 'btn-primary' : 'btn-outline-primary' %> m-1">Duyurular</a>
+                        <a href="/news?category=notes" class="btn <%= category === 'notes' ? 'btn-primary' : 'btn-outline-primary' %> m-1">Bildiriler</a>
+                        <a href="/news?category=future_project" class="btn <%= category === 'future_project' ? 'btn-primary' : 'btn-outline-primary' %> m-1">Gelecek projelerimiz</a>
+                    </div>
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-lg-8">
                     <% if (news && news.length > 0) { %>
@@ -228,8 +250,83 @@
                                     <%= item.title %>
                                 </a>
                             </h5>
-                            <p>
-                                <%= item.content.substring(0, 200) %>...
+                            <p style="text-align: justify;">
+                                <% 
+                                // HTML teglarni olib tashlash
+                                let cleanContent = item.content.replace(/<\/?[^>]+(>|$)/g, '');
+                                
+                                // HTML maxsus belgilarni tozalash
+                                cleanContent = cleanContent
+                                  .replace(/&ldquo;|&rdquo;|&quot;/g, '"')
+                                  .replace(/&lsquo;|&rsquo;/g, "'")
+                                  .replace(/&gt;/g, '>')
+                                  .replace(/&lt;/g, '<')
+                                  .replace(/&amp;/g, '&')
+                                  .replace(/&nbsp;/g, ' ')
+                                  .replace(/&mdash;/g, '—')
+                                  .replace(/&ndash;/g, '–')
+                                  // Turkcha va boshqa maxsus harflar uchun
+                                  .replace(/&uuml;/g, 'ü')
+                                  .replace(/&ouml;/g, 'ö')
+                                  .replace(/&ccedil;/g, 'ç')
+                                  .replace(/&Uuml;/g, 'Ü')
+                                  .replace(/&Ouml;/g, 'Ö')
+                                  .replace(/&Ccedil;/g, 'Ç')
+                                  .replace(/&auml;/g, 'ä')
+                                  .replace(/&Auml;/g, 'Ä')
+                                  .replace(/&euml;/g, 'ë')
+                                  .replace(/&Euml;/g, 'Ë')
+                                  .replace(/&iuml;/g, 'ï')
+                                  .replace(/&Iuml;/g, 'Ï')
+                                  .replace(/&acirc;/g, 'â')
+                                  .replace(/&Acirc;/g, 'Â')
+                                  .replace(/&ecirc;/g, 'ê')
+                                  .replace(/&Ecirc;/g, 'Ê')
+                                  .replace(/&icirc;/g, 'î')
+                                  .replace(/&Icirc;/g, 'Î')
+                                  .replace(/&ocirc;/g, 'ô')
+                                  .replace(/&Ocirc;/g, 'Ô')
+                                  .replace(/&ucirc;/g, 'û')
+                                  .replace(/&Ucirc;/g, 'Û')
+                                  .replace(/&#[0-9]+;/g, match => String.fromCharCode(match.replace(/[&#;]/g, '')))
+                                  .replace(/\s+/g, ' ')
+                                  .trim();
+                                  
+                                // TinyMCE paragraph elementlarini ajratish
+                                // <p> teglaridan tozalangan matndagi qatorlarni paragraflar sifatida ajratish
+                                let paragraphs = [];
+                                
+                                try {
+                                  // Avval paragraf teglarini o'rnini belgilash
+                                  let tempContent = item.content.replace(/<\/p>/gi, '</p>\n\n');
+                                  // HTML teglarni tozalash
+                                  tempContent = tempContent.replace(/<\/?[^>]+(>|$)/g, '');
+                                  // Maxsus belgilarni tozalash
+                                  tempContent = tempContent.replace(/&nbsp;/g, ' ');
+                                  // Paragraflarni ajratish
+                                  paragraphs = tempContent.split(/\n\n+/).filter(p => p.trim() !== '');
+                                  
+                                  // Agar paragraflar kam topilsa, bo'sh joylar bo'yicha bo'lish
+                                  if (paragraphs.length <= 1) {
+                                    paragraphs = cleanContent.split(/\s{2,}/).filter(p => p.trim() !== '');
+                                  }
+                                  
+                                  // Agar bu ham ishlalmasa, belgilar sonini cheklash
+                                  if (paragraphs.length <= 1) {
+                                    const maxCharsPerParagraph = 150;
+                                    paragraphs = [];
+                                    for (let i = 0; i < Math.min(cleanContent.length, 3 * maxCharsPerParagraph); i += maxCharsPerParagraph) {
+                                      paragraphs.push(cleanContent.substring(i, i + maxCharsPerParagraph));
+                                    }
+                                  }
+                                } catch (e) {
+                                  paragraphs = [cleanContent];
+                                }
+                                
+                                // Faqat birinchi 3 paragrafni olish
+                                const displayedContent = paragraphs.slice(0, 3).join('\n\n');
+                                %>
+                                <%= displayedContent %><% if (paragraphs.length > 3) { %>...<% } %>
                             </p>
                                 <a href="/news/<%= item.slug %>">
                                     <i class="fa-solid fa-arrow-right"></i>
@@ -383,6 +480,7 @@
             </div>
         </div>
     </footer>
+    
     <!-- search-popup -->
     <div class="search-popup">
         <button class="close-search"><i class="fa-solid fa-xmark"></i></button>

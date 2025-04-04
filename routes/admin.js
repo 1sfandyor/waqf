@@ -5,13 +5,19 @@ const path = require('path');
 const adminController = require('../controllers/admin');
 const newsController = require('../controllers/news');
 const galleryController = require('../controllers/galleryController');
+const sliderController = require('../controllers/sliderController');
 const authController = require('../controllers/auth');
 const { isAdmin, isAuthenticated, isEditor } = require('../middleware/auth');
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../public/uploads/'));
+    // Slider rasmlar uchun maxsus jild
+    if (req.originalUrl.includes('/sliders')) {
+      cb(null, path.join(__dirname, '../public/uploads/sliders/'));
+    } else {
+      cb(null, path.join(__dirname, '../public/uploads/'));
+    }
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '-'));
@@ -60,6 +66,22 @@ router.get('/news/:id/edit', newsController.getNewsEdit);
 router.post('/news/:id/update', upload.single('image'), newsController.postNewsUpdate);
 router.post('/news/:id/delete', newsController.deleteNews);
 
+// Slider management routes
+router.get('/sliders', isEditor, sliderController.getSliders);
+router.get('/sliders/create', isEditor, sliderController.getCreateSlider);
+router.post('/sliders/create', isEditor, upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'titleImage', maxCount: 1 }
+]), sliderController.postCreateSlider);
+router.get('/sliders/:id/edit', isEditor, sliderController.getEditSlider);
+router.post('/sliders/:id/update', isEditor, upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'titleImage', maxCount: 1 }
+]), sliderController.postUpdateSlider);
+router.post('/sliders/:id/delete', isEditor, sliderController.deleteSlider);
+router.post('/sliders/change-order', isEditor, sliderController.postChangeOrder);
+router.post('/sliders/:id/toggle-status', isEditor, sliderController.toggleStatus);
+
 // Gallery Management (Editor or Admin)
 router.get('/gallery', isEditor, galleryController.getAllGalleries);
 router.get('/gallery/create', isEditor, galleryController.createGalleryForm);
@@ -67,6 +89,9 @@ router.post('/gallery/create', isEditor, upload.array('images', 20), galleryCont
 router.get('/gallery/:id/edit', isEditor, galleryController.editGalleryForm);
 router.post('/gallery/:id/edit', isEditor, upload.array('images', 20), galleryController.updateGallery);
 router.post('/gallery/:id/delete', isEditor, galleryController.deleteGallery);
+
+// TinyMCE image upload route
+router.post('/upload-image', upload.single('file'), adminController.uploadImage);
 
 // Logout route
 router.get('/logout', authController.logout);

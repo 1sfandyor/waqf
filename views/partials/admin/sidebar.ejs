@@ -27,6 +27,23 @@
     </ul>
   </li>
 
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/sliders')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_sliders" aria-controls="ddmenu_sliders" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-slideshow"></i>
+      </span>
+      <span class="text">Slayderlar</span>
+    </a>
+    <ul id="ddmenu_sliders" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/sliders" class="<% if (path === '/admin/sliders') { %>active<% } %>">Barcha slayderlar</a>
+      </li>
+      <li>
+        <a href="/admin/sliders/create" class="<% if (path === '/admin/sliders/create') { %>active<% } %>">Slayder qo'shish</a>
+      </li>
+    </ul>
+  </li>
+
   <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/gallery')) { %>active<% } %>">
     <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_gallery" aria-controls="ddmenu_gallery" aria-expanded="false" aria-label="Toggle navigation">
       <span class="icon">

@@ -9,7 +9,7 @@
 
     [Table of contents]
 
-      01. slider-home-1
+      01. slider-home-1 (o'chirildi)
       02. slider-ayat
       03. pdf-slider
       04. audio-ayat
@@ -23,16 +23,8 @@
 -----------------------------------------------------------------------------------*/
 
 jQuery(document).ready(function($){
-/***--------  01. slider-home-1   ------- ***/
-    if ( $.isFunction($.fn.owlCarousel) ) {
-    $('.slider-home-1').owlCarousel({
-        loop:true,
-        arrows:false,
-        autoplay:true,
-        autoplayTimeout:100000,
-        items:1
-      })
 /***--------  02. slider-ayat   ------- ***/
+    if ( $.isFunction($.fn.owlCarousel) ) {
     $('.slider-ayat').owlCarousel({
         loop:true,
         arrows:false,

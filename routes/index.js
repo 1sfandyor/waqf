@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth');
 const homeController = require('../controllers/home');
+const path = require('path');
+const News = require('../models/News');
 
-// Home page
-router.get('/', (req, res) => {
-  res.redirect('/login');
-});
+// Home page with dynamic news
+router.get('/', homeController.getHomePage);
 
 // Yangiliklar sahifasi
 router.get('/news', homeController.getNewsPage);

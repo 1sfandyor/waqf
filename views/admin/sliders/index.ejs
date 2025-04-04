@@ -1,0 +1,121 @@
+<%- include('../../partials/admin/header') %>
+
+<div class="row h-100">
+  <div class="col-12">
+    <div class="card py-lg-5 h-100">
+      <div class="card-header container">
+        <h4 class="card-title">Slayderlar Ro'yxati</h4>
+        <a href="/admin/sliders/create" class="btn btn-primary">Yangi Slayder Qo'shish</a>
+      </div>
+      <div class="card-body container px-0">
+        <% if (typeof messages != 'undefined' && messages.success) { %>
+          <div class="alert alert-success alert-dismissible fade show">
+            <%= messages.success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% } %>
+        <% if (typeof messages != 'undefined' && messages.error) { %>
+          <div class="alert alert-danger alert-dismissible fade show">
+            <%= messages.error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% } %>
+        
+        <div class="table-responsive">
+          <table id="slidersTable" class="table table-bordered table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="px-3">Rasm</th>
+                <th class="px-3">Sarlavha</th>
+                <th class="px-3">Tugma matni</th>
+                <th class="px-3">Havola</th>
+                <th class="px-3">Status</th>
+                <th class="px-3">Harakatlar</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (sliders && sliders.length > 0) { %>
+                <% sliders.forEach(function(slider) { %>
+                  <tr data-id="<%= slider._id %>">
+                    <td  class="px-3">
+                      <img src="<%= slider.image %>" alt="<%= slider.title %>" width="100" height="60" style="object-fit: cover;">
+                    </td>
+                    <td class="px-3"><%= slider.title %></td>
+                    <td class="px-3"><%= slider.buttonText %></td>
+                    <td class="px-3"><%= slider.buttonLink %></td>
+                    <td class="px-3">
+                      <div class="form-check form-switch">
+                        <input class="form-check-input status-toggle" type="checkbox" 
+                               data-id="<%= slider._id %>" 
+                               <%= slider.active ? 'checked' : '' %>>
+                        <label class="form-check-label">
+                          <%= slider.active ? 'Aktiv' : 'Faol emas' %>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="px-3">
+                      <a href="/admin/sliders/<%= slider._id %>/edit" class="btn btn-sm btn-outline-info"
+                        style="--bs-btn-font-size: .76rem;">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="<%= slider._id %>"
+                        style="--bs-btn-font-size: .76rem;">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="7" class="text-center">Hech qanday slayder topilmadi</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Slayderlarni O'chirish</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Ushbu slayderni o'chirishni xohlaysizmi?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bekor qilish</button>
+        <form id="deleteForm" method="POST" action="">
+          <button type="submit" class="btn btn-danger">O'chirish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Slayderlarni o'chirish tugmasi
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+    const deleteForm = document.getElementById('deleteForm');
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const sliderId = this.getAttribute('data-id');
+        console.log('O\'chirish tugmasi bosildi, ID:', sliderId);
+        
+        deleteForm.setAttribute('action', `/admin/sliders/${sliderId}/delete`);
+        deleteModal.show();
+      });
+    });
+  });
+</script> 

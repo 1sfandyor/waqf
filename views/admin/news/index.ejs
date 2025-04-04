@@ -103,7 +103,29 @@
                 <% } %>
               </td>
               <td>
-                <span class="status-btn primary-btn"><%= item.category %></span>
+                <% 
+                let categoryName = '';
+                let categoryClass = 'primary-btn';
+                
+                switch(item.category) {
+                  case 'news':
+                    categoryName = 'Duyurular';
+                    categoryClass = 'primary-btn';
+                    break;
+                  case 'notes':
+                    categoryName = 'Bildiriler';
+                    categoryClass = 'warning-btn';
+                    break;
+                  case 'future_project':
+                    categoryName = 'Gelecek projelerimiz';
+                    categoryClass = 'success-btn';
+                    break;
+                  default:
+                    categoryName = item.category;
+                    categoryClass = 'primary-btn';
+                }
+                %>
+                <span class="status-btn <%= categoryClass %>"><%= categoryName %></span>
               </td>
               <td>
                 <p class="text-sm"><%= new Date(item.createdAt).toLocaleDateString() %></p>

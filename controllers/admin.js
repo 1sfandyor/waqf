@@ -228,7 +228,8 @@ exports.getProfile = (req, res) => {
   res.render('admin/profile', {
     title: 'Mening profilim',
     user: req.user,
-    path: '/admin/profile'
+    path: '/admin/profile',
+    messages: req.flash()
   });
 };
 
@@ -281,5 +282,27 @@ exports.postProfileUpdate = async (req, res) => {
     console.error('Error updating profile:', err);
     req.flash('error', 'Profil ma\'lumotlarini yangilashda xatolik yuz berdi');
     res.redirect('/admin/profile');
+  }
+};
+
+/**
+ * Handle TinyMCE image uploads
+ */
+exports.uploadImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'Rasm yuklanmadi' });
+    }
+    
+    // Create image URL
+    const imageUrl = `/uploads/${req.file.filename}`;
+    
+    // Return success response for TinyMCE
+    return res.status(200).json({
+      location: imageUrl
+    });
+  } catch (error) {
+    console.error('Rasm yuklashda xatolik:', error);
+    return res.status(500).json({ error: 'Rasm yuklashda xatolik yuz berdi' });
   }
 }; 

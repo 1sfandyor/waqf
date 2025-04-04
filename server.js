@@ -8,6 +8,7 @@ const MongoStore = require('connect-mongo');
 const passport = require('passport');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
+const News = require('./models/News'); // News modelini import qilish
 
 // Initialize express app
 const app = express();

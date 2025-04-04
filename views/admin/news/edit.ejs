@@ -1,5 +1,8 @@
 <%- include('../../partials/admin/header') %>
 
+<!-- TinyMCE editor CDN -->
+<script src="https://cdn.tiny.cloud/1/eru0dp5689b9p0hdmv7t60mo38e6xvb82ejq4pkv9ocvfu2s/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 <!-- ========== title-wrapper start ========== -->
 <div class="title-wrapper pt-30">
   <div class="row align-items-center">
@@ -56,7 +59,7 @@
             
             <div class="input-style-1 mb-4">
               <label for="content" class="required">Kontent</label>
-              <textarea name="content" id="content" rows="10" placeholder="Yangilik matni" required><%= news.content %></textarea>
+              <textarea name="content" id="content" class="tinymce-editor" rows="10" placeholder="Yangilik matni" required><%= news.content %></textarea>
             </div>
             
             <div class="row">
@@ -65,9 +68,9 @@
                   <label for="category">Kategoriya</label>
                   <div class="select-position">
                     <select name="category" id="category">
-                      <option value="Vakf hayati" <%= news.category === 'Vakf hayati' ? 'selected' : '' %>>Vakf hayati</option>
-                      <option value="Duyurular" <%= news.category === 'Duyurular' ? 'selected' : '' %>>Duyurular</option>
-                      <option value="Boshqa" <%= news.category === 'Boshqa' ? 'selected' : '' %>>Boshqa</option>
+                      <option value="news" <%= news.category === 'news' ? 'selected' : '' %>>Duyurular</option>
+                      <option value="notes" <%= news.category === 'notes' ? 'selected' : '' %>>Bildiriler</option>
+                      <option value="future_project" <%= news.category === 'future_project' ? 'selected' : '' %>>Gelecek projelerimiz</option>
                     </select>
                   </div>
                 </div>
@@ -146,6 +149,60 @@
         document.querySelector('.preview-container').style.display = 'block';
       }
       reader.readAsDataURL(file);
+    }
+  });
+  
+  // TinyMCE editor konfiguratsiyasi
+  tinymce.init({
+    selector: 'textarea.tinymce-editor',
+    height: 500,
+    promotion: false,
+    plugins: [
+        // Core editing features
+        'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 
+        'searchreplace', 'table', 'visualblocks', 'wordcount',
+        // Premium features
+        'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 
+        'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 
+        'advtemplate', 'mentions', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 
+        'typography', 'inlinecss', 'markdown'
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
+        'link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | ' +
+        'align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Admin',
+    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+    images_upload_url: '/admin/upload-image',
+    automatic_uploads: true,
+    file_picker_types: 'image',
+    end_container_on_empty_block: true,
+    br_in_pre: false,
+    forced_root_block: 'p',
+    keep_styles: true,
+    shift_enter_behavior: 'br',
+    file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.onchange = function() {
+            var file = this.files[0];
+            
+            var reader = new FileReader();
+            reader.onload = function () {
+                var id = 'blobid' + (new Date()).getTime();
+                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(',')[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
+                
+                // Call the callback and populate the Title field with the file name
+                cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+        };
+        
+        input.click();
     }
   });
 </script> 

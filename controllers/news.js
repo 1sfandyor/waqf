@@ -62,7 +62,8 @@ exports.getNewsCreate = (req, res) => {
     title: 'Yangilik qo\'shish',
     user: req.user,
     path: '/admin/news/create',
-    error: req.flash('error')
+    error: req.flash('error'),
+    messages: req.flash()
   });
 };
 
@@ -108,7 +109,8 @@ exports.postNewsCreate = async (req, res) => {
         error: 'Sarlavha va matn kiritilishi shart',
         formData: req.body,
         user: req.user,
-        path: '/admin/news/create'
+        path: '/admin/news/create',
+        messages: req.flash()
       });
     }
     
@@ -118,7 +120,8 @@ exports.postNewsCreate = async (req, res) => {
         error: 'Asosiy rasm kiritilishi shart',
         formData: req.body,
         user: req.user,
-        path: '/admin/news/create'
+        path: '/admin/news/create',
+        messages: req.flash()
       });
     }
     
@@ -150,7 +153,9 @@ exports.postNewsCreate = async (req, res) => {
       title: 'Yangilik qo\'shish',
       error: 'Yangilik yaratishda xatolik yuz berdi: ' + err.message,
       formData: req.body,
-      user: req.user
+      user: req.user,
+      path: '/admin/news/create',
+      messages: req.flash()
     });
   }
 };

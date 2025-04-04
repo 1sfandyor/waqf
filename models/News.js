@@ -21,7 +21,7 @@ const NewsSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Vakf hayati', 'Duyurular', 'Boshqa'],
+    enum: ['Vakf hayati', 'Duyurular', 'Boshqa', 'news', 'notes', 'future_project'],
     default: 'Boshqa'
   },
   tags: {

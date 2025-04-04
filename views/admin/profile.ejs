@@ -67,18 +67,20 @@
             </div><!-- /.card-header -->
             <div class="card-body">
               <!-- Flash Messages -->
-              <% if (messages.success) { %>
-                <div class="alert alert-success alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <%= messages.success %>
-                </div>
-              <% } %>
-              
-              <% if (messages.error) { %>
-                <div class="alert alert-danger alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <%= messages.error %>
-                </div>
+              <% if (typeof messages !== 'undefined') { %>
+                <% if (messages.success && messages.success.length > 0) { %>
+                  <div class="alert alert-success alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <%= messages.success %>
+                  </div>
+                <% } %>
+                
+                <% if (messages.error && messages.error.length > 0) { %>
+                  <div class="alert alert-danger alert-dismissible fade show">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <%= messages.error %>
+                  </div>
+                <% } %>
               <% } %>
               
               <div class="tab-content">
@@ -166,7 +168,7 @@
     
     // Auto-hide alerts after 5 seconds
     setTimeout(function() {
-      $(".alert").fadeOut("slow");
+      $(".alert").alert('close');
     }, 5000);
   });
 </script> 

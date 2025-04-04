@@ -1,5 +1,16 @@
 <%- include('../partials/admin/header') %>
 
+<style>
+  .news-title-link {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .news-title-link:hover {
+    color: #4A6CF7;
+  }
+</style>
+
 <!-- ========== title-wrapper start ========== -->
 <div class="title-wrapper pt-30 container">
   <div class="row align-items-center">
@@ -97,6 +108,7 @@
               <th><h6 class="text-sm text-medium">Sarlavha</h6></th>
               <th><h6 class="text-sm text-medium">Sana</h6></th>
               <th><h6 class="text-sm text-medium">Holati</h6></th>
+              <th><h6 class="text-sm text-medium">Amallar</h6></th>
             </tr>
           </thead>
           <tbody>
@@ -104,7 +116,9 @@
               <% latestNews.forEach(item => { %>
                 <tr>
                   <td>
-                    <p class="text-sm"><%= item.title.substring(0, 30) %><%= item.title.length > 30 ? '...' : '' %></p>
+                    <a href="/admin/news/<%= item._id %>/edit" class="text-sm news-title-link">
+                      <%= item.title.substring(0, 30) %><%= item.title.length > 30 ? '...' : '' %>
+                    </a>
                   </td>
                   <td>
                     <p class="text-sm"><%= new Date(item.createdAt).toLocaleDateString() %></p>
@@ -114,11 +128,23 @@
                       <%= item.status === 'published' ? 'Chop etilgan' : 'Qoralama' %>
                     </span>
                   </td>
+                  <td>
+                    <div class="action">
+                      <a href="/admin/news/<%= item._id %>/edit" class="text-primary mx-1" title="Tahrirlash">
+                        <i class="lni lni-pencil-alt"></i>
+                      </a>
+                      <button type="button" class="text-danger mx-1 btn-delete" title="O'chirish"
+                        style="background: none; border: none; cursor: pointer; padding: 0;"
+                        data-id="<%= item._id %>" data-title="<%= item.title %>">
+                        <i class="lni lni-trash-can"></i>
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               <% }) %>
             <% } else { %>
               <tr>
-                <td colspan="3" class="text-center">Yangiliklar topilmadi</td>
+                <td colspan="4" class="text-center">Yangiliklar topilmadi</td>
               </tr>
             <% } %>
           </tbody>
@@ -162,4 +188,44 @@
 </div>
 <!-- end row -->
 
+<!-- O'chirish modali -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Yangilikni o'chirish</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Siz rostdan ham "<span id="deleteItemTitle"></span>" yangiligini o'chirmoqchimisiz?</p>
+        <p class="text-danger">Bu amalni ortga qaytarib bo'lmaydi!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Bekor qilish</button>
+        <form id="deleteForm" method="POST">
+          <button type="submit" class="btn btn-danger">O'chirish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <%- include('../partials/admin/footer') %> 
+
+<script>
+  // O'chirish tugmasi bosilganda
+  document.querySelectorAll('.btn-delete').forEach(button => {
+    button.addEventListener('click', function() {
+      const id = this.getAttribute('data-id');
+      const title = this.getAttribute('data-title');
+      
+      // Modal ma'lumotlarini to'ldirish
+      document.getElementById('deleteItemTitle').textContent = title;
+      document.getElementById('deleteForm').action = `/admin/news/${id}/delete`;
+      
+      // Modalni ochish
+      const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      deleteModal.show();
+    });
+  });
+</script> 

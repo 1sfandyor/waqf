@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Ezan Vakfı - Orta Asya halklarının infak eli' %></title>
+    <link rel="icon" href="assets/images/favicon.png">
+    <!-- CSS only -->
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="assets/css/owl.theme.default.min.css">  
+    <!-- fancybox -->
+    <link rel="stylesheet" href="assets/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="assets/css/nice-select.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="assets/css/news.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/preloader.js"></script>
+</head>
+<body>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+  </div> 
+  <!-- preloader end -->
+
+    <!-- Header partial -->
+    <%- include('./partials/site/header') %>
+
+    <!-- SLIDERS carousel -->
+    <section class="slider-home-1 owl-carousel owl-theme">
+        <% if (sliders && sliders.length > 0) { %>
+            <% sliders.forEach(function(slider) { %>
+                <div class="hero-section item">
+                    <% if (slider.buttonLink && slider.buttonLink !== '#') { %>
+                        <a href="<%= slider.buttonLink %>" class="position-absolute w-100 h-100 top-0 zed"></a>
+                    <% } %>
+                    <img src="<%= slider.image %>" alt="<%= slider.title || 'Slayder' %>" class="hero-img-style">
+                    <% if ((slider.title && slider.title.trim() !== '') || (slider.description && slider.description.trim() !== '') || true) { %>
+                        <div class="overlay"></div>
+                        <div class="container" style="height: 100%;">
+                            <div class="row" style="height: 100%;">
+                                <div class="col-lg-6 d-flex h-100 align-items-end">
+                                    <div class="hero-text" style="flex-direction: flex-end; align-items: flex-end;">
+                                        <% if (slider.title && slider.title.trim() !== '') { %>
+                                            <h1><%= slider.title %></h1>
+                                        <% } else if (slider.titleImage) { %>
+                                            <img src="<%= slider.titleImage %>" alt="Sarlavha rasmi" width="400" height="152" style="max-width: 100%; margin-bottom: 20px;">
+                                        <% } %>
+                                        <% if (slider.description && slider.description.trim() !== '') { %>
+                                            <p><%= slider.description %></p>
+                                        <% } %>
+                                        <% if (slider.buttonText && slider.buttonText.trim() !== '') { %>
+                                            <a href="<%= slider.buttonLink || '#' %>" class="btn"><%= slider.buttonText %></a>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <!-- Default slider (shown when no sliders in database) -->
+            <div class="hero-section item position-relative">
+                <a href="/about.html" class="position-absolute w-100 h-100 top-0 zed"></a>
+                <img src="/assets/images/slider-photos/1.jpg" alt="hero-img" class="hero-img-style">
+            </div>
+        <% } %>
+    </section>
+
+    <section class="gap no-top" >
+        <div class="container">
+            <div class="namaz-timing">
+                <a href="/academy.html" class="namaz-time">
+                    <img src="assets/images/namaz-time-icon-1.png" alt="icon" width="45" height="45">
+                    <h4>Mezana</h4>
+                    <h5>Öğrencilerine okul harcı yardımı</h5>
+                </a>
+                <a href="/" class="namaz-time" >
+                    <img src="assets/images/namaz-time-icon-2.png" alt="icon" width="45" height="45" >
+                    <h4>Hocalar maaşı</h4>
+                    <h5>Hocalar için aylık maaş harcı yardımı</h5>
+                </a>
+                <a href="/students-bedroom.html" class="namaz-time" >
+                    <img src="assets/images/namaz-time-icon-3.png" alt="icon" width="45" height="45" >
+                    <h4>Yurt</h4>
+                    <h5>Yurt ve mutfak harcı yardımı </h5>
+                </a>
+                <a href="/media.html" class="namaz-time" >
+                    <img src="assets/images/namaz-time-icon-4.png" alt="icon" width="45" height="45" >
+                    <h4>AzonGLOBAL</h4>
+                    <h5>AzonGLOBAL medya harcı yardımı</h5>
+                </a>
+                <a href="/donation.html" class="namaz-time" >
+                    <img src="assets/images/namaz-time-icon-5.png" alt="icon" width="45" height="45" >
+                    <h4>Genel</h4>
+                    <h5>Yapacağınız Genel Bağışlar</h5>
+                </a>
+                <a href="/" class="namaz-time yellow-bg" data-default-img="assets/images/zekat-white.png" data-hover-img="assets/images/zekat-yellow.png">
+                    <img src="assets/images/zekat-white.png" alt="icon" width="45" height="45" class="zekat-icon">
+                    <h4>Zekat</h4>
+                    <h5 class="mt-3">Zekat vermek</h5>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="gap no-top">
+        <div class="container">    
+            <div class="header">
+                <div class="author-name">Haber ve Duyurular</h>
+            </div>
+            <div class="news-grid">
+                <div class="slider" id="newsSlider">
+                    <!-- Slider navigation -->
+                    <div class="slider-nav">
+                        <div class="nav-btn prev-btn">
+                            <i class="nav-arrow arrow-left"></i>
+                        </div>
+                        <div class="nav-btn next-btn">
+                            <i class="nav-arrow arrow-right"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Slider indicators -->
+                    <div class="slider-indicators">
+                        <% 
+                        // Faqat news kategoriyasidagi yangiliklar
+                        const newsItems = latestNews.filter(item => item.category === 'news');
+                        for (let i = 0; i < Math.min(3, newsItems.length); i++) { 
+                        %>
+                            <div class="indicator <%= i === 0 ? 'active' : '' %>" data-slide="<%= i %>"></div>
+                        <% } %>
+                    </div>
+                    
+                    <!-- Slides -->
+                    <div class="slides">
+                        <% if (newsItems && newsItems.length > 0) { %>
+                            <% for (let i = 0; i < Math.min(3, newsItems.length); i++) { 
+                                const news = newsItems[i]; 
+                            %>
+                            <!-- SLIDE <%= i+1 %> -->
+                            <div class="slide">
+                                <a href="/news/<%= news.slug %>" class="slide-link"></a>
+                                <img src="<%= news.image %>" 
+                                    alt="<%= news.title %>" class="slide-img" width="700" height="700">
+                                <div class="slide-content">
+                                    <h1 class="slide-title">
+                                        <%= news.title %>
+                                    </h1>
+                                </div>
+                            </div>
+                            <% } %>
+                        <% } else { %>
+                            <!-- SLIDE 1 (DEFAULT) -->
+                            <div class="slide">
+                                <a href="#" class="slide-link"></a>
+                                <img src="https://plus.unsplash.com/premium_photo-1691223733678-095fee90a0a7?q=80&w=1521&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                                    alt="Exam" class="slide-img " width="700" height="700">
+                                <div class="slide-content">
+                                    <h1 class="slide-title">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem, fugit.
+                                    </h1>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+    
+                <div class="side-articles">
+                    <% if (newsItems && newsItems.length > 3) { %>
+                        <% for (let i = 3; i < Math.min(6, newsItems.length); i++) { 
+                            const news = newsItems[i];
+                        %>
+                        <!-- NEWS <%= i-2 %> -->
+                        <div class="side-article">
+                            <a href="/news/<%= news.slug %>" class="side-article-link"></a>
+                            <div class="side-article-content">
+                                <h2 class="side-article-title"><%= news.title %></h2>
+                                <p class="side-article-desc">
+                                    <%= news.content.replace(/<[^>]*>/g, '').substring(0, 100) %>...
+                                </p>
+                            </div>
+                            <img src="<%= news.image %>" alt="<%= news.title %>" class="side-article-img">
+                        </div>
+                        <% } %>
+                    <% } else { %>
+                        <!-- NEWS 1 (DEFAULT) -->
+                        <div class="side-article">
+                            <a href="#" class="side-article-link"></a>
+                            <div class="side-article-content">
+                                <h2 class="side-article-title">"Mezana" Uluslararası Dini İlimler Akademisi'nde yeni ihtisas bölümü</h2>
+                                <p class="side-article-desc">
+                                    Ders programlarının geliştirilmesi ve alanda yeni uzmanların yetiştirilmesine yönelik iki yıllık ihtisas bölümünün oluşturulması meseleleri görüşüldü.
+                                </p>
+                            </div>
+                            <img src="/assets/images/news/activity.jpg" alt="Breaking" class="side-article-img">
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <section class="position-relative">
+        <div class="container">
+            <div class="heading">
+                <!-- <p>Hoş Geldiniz</p> -->
+                <h2 style="font-size: 55px;">Ezan Vakfı - Orta Asya halklarının infak eli</h2>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="islamic-history">
+                        <p style="text-align: justify;">
+                            "Ezan'ın manasına uygun hizmet vermek, insanlığın itikadi, 
+                            ilmi, medeni, toplumsal; bunlarla birlikte maddi
+                            ve manevi yönlerden yükselmesine destek olmak; birlik 
+                            ve beraberliği sağlamak için hizmet vermektedir.
+                        </p>
+                        <p style="text-align: justify;">
+                            Biz imanımızın gereği olarak İslamiyete hizmet etme, 
+                            yardıma ihtiyacı olan kabiliyetli gençlerin yüksek
+                            seviyede eğitim alması ve yetiştiği sahada çalışmasına 
+                            yardımcı olmak; kendi aralarında iyilikleri yaymaya, iş 
+                            birliğini devam ettirmeye yardımcı olmak üzere faaliyetimizi 
+                            devam ettirmekteyiz. Bu vesile ile, bu yüce hizmete maddi ve
+                            manevi olarak destek veren değerli dostlarımıza minnettar
+                            olduğumu ifade etmek istiyorum.
+                        </p>
+
+                        <div class="d-flex flex-column align-items-end">
+                            <h3 style="font-size: 18px;">Mübeşşir AHMED Hocaefendi</h3>
+                            <span>Mütevelli Heyet Başkanı</span>
+                        </div>
+                        <a href="lider.html" class="btn">Devamını oku</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="row align-items-end">
+                        <div class="col-lg-5 col-6" style="padding-right: 0;">
+                            <div class="">
+                                <img src="assets/images/heading-img.png" alt="circle-img" width="190" height="240">
+                                <figure class="circle-img">
+                                    <!-- <img src="assets/images/logo.svg" alt="circle-img"> -->
+                                </figure>
+                            </div>
+                            <div class="real-history-book hoverimg">
+                                <figure>
+                                    <img src="/assets/images/any/mezana.jpg" alt="img" width="310" height="340">
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-6">
+                            <div class="real-history-book two hoverimg">
+                                <figure>
+                                    <img src="/assets/images/about-azonvaqfi/3.webp" alt="real-history-boy" width="410"  height="588">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <section class="gap">
+        <div class="container mb-5">
+            <div class="heading">
+                <!-- <p class="text-capitalize">Gayret bizden, muvaffakiyet Allah'tandır...</p> -->
+                <h2>Faaliyetlerimiz</h2>
+            </div>
+            <div class="pillars">
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/media.html"></a>
+                    <figure><img src="assets/images/icons/media.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/bg/azon.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Medya ve haberleşme</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+
+
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/academy.html"></a>
+                    <figure><img src="assets/images/icons/academy.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/4.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>"Mezana" Uluslararası Dini İlimler Akademisi</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+                
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/madrasah.html"></a>
+                    <figure><img src="assets/images/icons/madrasah.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/madrasah.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p> "Mezana" Medresesi</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+
+
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/womenAcademy.html"></a>
+                    <figure><img src="assets/images/icons/women.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/women.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>"Mezana" Uluslararası Dini İlimler Akademisi - Kız Şubesi</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/quranic-course.html"></a>
+                    <figure><img src="assets/images/icons/quran.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/qurancourse.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Çocuklar ve yetişkinler için Kur'ân kursları</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="pillars">
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/students-bedroom.html"></a>
+                    <figure><img src="assets/images/icons/bedroom.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/5.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Talebe Yurdu</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/grant.html"></a>
+                    <figure><img src="assets/images/icons/grant.png" alt="img" width="50" height="50"></figure>
+                    <img src="https://i.pinimg.com/736x/cb/47/d4/cb47d47a905b3c6ef82f23b9bdbdf7fe.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Geniş kapsamlı burslar ve eğitim yardımları</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+
+
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/social-activity.html"></a>
+                    <figure><img src="assets/images/icons/socialActivity.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/sosyal.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Sosyal Ve Kültürel Faaliyetler</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/university.html"></a>
+                    <figure><img src="assets/images/icons/university.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/grant/books.jpg" alt="img" width="230" height="328" style="object-position: left;">
+                    <div class="pillars-content">
+                        <p>"İslam Düşüncesi" Enstitüsü</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+                <div class="pillars-name">
+                    <a class="pillars-link" href="/publishing-house.html"></a>
+                    <figure><img src="assets/images/icons/book.png" alt="img" width="50" height="50"></figure>
+                    <img src="assets/images/projects/press.jpg" alt="img" width="230" height="328">
+                    <div class="pillars-content">
+                        <p>Yayıncılık</p>
+                        <span>Giriş</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <section class="listen-holy" style="background-image: url('/assets/images/projects/6.jpg'); background-repeat: no-repeat; background-size: cover; background-position: left 0 bottom 45%;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="heading two">
+                        <p>GENEL BAĞIŞ</p>
+                        <h2>Mevcut akademi faaliyeti için!</h2>
+                        <h6>Buyrun! Birlikte Mezana öğrencileri için eğitim binası inşa edelim!</h6>
+                        <a href="/news.html" class="btn">Daha</a>
+                    </div>
+                </div>
+                <div class="offset-lg-1 col-lg-5">
+                    <div class="support-us" style="background-image: url(assets/images/color-bg.jpg);">
+                        <h4 class="font-weight-bold">Hepimizin</h4>
+                        <div class="progressbar">
+                            <div class="circle" data-percent="35">
+                                <div>35%</div>
+                            </div>
+                        </div>
+                        <h6 style="font-size: 45px; margin-bottom: 10px;">Katkısıyla!</h6>
+                        <a href="#" class="btn">Bağış Yapmak</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <section>
+        <div class="container">
+            <div class="fun-facts">
+                <div class="islamic-mosque" style="background-image: url(assets/images/color-bg.jpg);">
+                    <div class="count-style">
+                        <h2 data-max="200"><sup>+</sup></h2>
+                    </div>
+                    <h5>Toplam öğrenciler</h5>
+                    <img src="assets/images/fun-facts-1.png" alt="fun-facts" width="52" height="43">
+                </div>
+                <div class="islamic-mosque" style="background-image: url(assets/images/color-bg.jpg);">
+                    <div class="count-style">
+                        <h2 data-max="105"><sup>+</sup></h2>
+                    </div>
+                    <h5>Yurtta kalan öğrenciler</h5>
+                    <img src="assets/images/fun-facts-2.png" alt="fun-facts" width="52" height="43">
+                </div>
+                <div class="islamic-mosque mb-sm-0" style="background-image: url(assets/images/color-bg.jpg);">
+                    <div class="count-style">
+                        <h2 style="font-size: 45px; margin-bottom: 20px;">1.323.000+<sup></sup></h2>
+                    </div>
+                    <h5>AzonGLOBAL <br> medya takipçileri</h5>
+                    <img src="assets/images/fun-facts-3.png" alt="fun-facts" width="52" height="43">
+                </div>
+                <div class="islamic-mosque mb-0" style="background-image: url(assets/images/color-bg.jpg);">
+                    <div class="count-style">
+                        <h2><sup>1.800+</sup></h2>
+                    </div>
+                    <h5>Medyaya yüklenen videolar</h5>
+                    <img src="assets/images/fun-facts-4.png" alt="fun-facts" width="52" height="43">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <!-- <section class="our-courses-section" style="background-image: url('https://winsfolio.net/html/ibadah/assets/images/courses-back.png');"> -->
+
+    <section class="our-courses-section" style="background: white">
+        <div class="container">
+            <div class="heading">
+                <img src="assets/images/heading-img.png" alt="icon"  width="60" height="75">
+                <h2>Bildiriler</h2>
+            </div>
+            
+            <div class="row">
+                <% if (typeof latestNews !== 'undefined' && latestNews && latestNews.length > 0) { %>
+                    <% 
+                    // Faqat "notes" kategoriyasidagi yangiliklar
+                    const bildirilerNews = latestNews.filter(news => news.category === 'notes');
+                    
+                    if (bildirilerNews.length > 0) {
+                        bildirilerNews.forEach(function(news) { 
+                    %>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="blog hoverimg bg-white">
+                                <h4><%= new Date(news.createdAt).getDate() %><span><%= new Date(news.createdAt).toLocaleString('tr-TR', { month: 'long', year: 'numeric' }) %></span></h4>
+                                <figure>
+                                    <img src="<%= news.image %>" alt="<%= news.title %>" width="400" height="260" class="w-100 object-fit-cover">
+                                </figure>
+                                <h5><a href="/news/<%= news.slug %>"><%= news.title %></a></h5>
+                                <p style="text-align: justify;">
+                                    <% 
+                                    // HTML teglarni olib tashlash
+                                    let cleanContent = news.content.replace(/<\/?[^>]+(>|$)/g, '');
+                                    
+                                    // HTML maxsus belgilarni tozalash
+                                    cleanContent = cleanContent
+                                      .replace(/&ldquo;|&rdquo;|&quot;/g, '"')
+                                      .replace(/&lsquo;|&rsquo;/g, "'")
+                                      .replace(/&gt;/g, '>')
+                                      .replace(/&lt;/g, '<')
+                                      .replace(/&amp;/g, '&')
+                                      .replace(/&nbsp;/g, ' ')
+                                      .replace(/&mdash;/g, '—')
+                                      .replace(/&ndash;/g, '–')
+                                      // Turkcha va boshqa maxsus harflar uchun
+                                      .replace(/&uuml;/g, 'ü')
+                                      .replace(/&ouml;/g, 'ö')
+                                      .replace(/&ccedil;/g, 'ç')
+                                      .replace(/&Uuml;/g, 'Ü')
+                                      .replace(/&Ouml;/g, 'Ö')
+                                      .replace(/&Ccedil;/g, 'Ç')
+                                      .replace(/&auml;/g, 'ä')
+                                      .replace(/&Auml;/g, 'Ä')
+                                      .replace(/&euml;/g, 'ë')
+                                      .replace(/&Euml;/g, 'Ë')
+                                      .replace(/&iuml;/g, 'ï')
+                                      .replace(/&Iuml;/g, 'Ï')
+                                      .replace(/&acirc;/g, 'â')
+                                      .replace(/&Acirc;/g, 'Â')
+                                      .replace(/&ecirc;/g, 'ê')
+                                      .replace(/&Ecirc;/g, 'Ê')
+                                      .replace(/&icirc;/g, 'î')
+                                      .replace(/&Icirc;/g, 'Î')
+                                      .replace(/&ocirc;/g, 'ô')
+                                      .replace(/&Ocirc;/g, 'Ô')
+                                      .replace(/&ucirc;/g, 'û')
+                                      .replace(/&Ucirc;/g, 'Û')
+                                      .replace(/&#[0-9]+;/g, match => String.fromCharCode(match.replace(/[&#;]/g, '')))
+                                      .replace(/\s+/g, ' ')
+                                      .trim();
+                                      
+                                    // TinyMCE paragraph elementlarini ajratish
+                                    // <p> teglaridan tozalangan matndagi qatorlarni paragraflar sifatida ajratish
+                                    let paragraphs = [];
+                                    
+                                    try {
+                                      // Avval paragraf teglarini o'rnini belgilash
+                                      let tempContent = news.content.replace(/<\/p>/gi, '</p>\n\n');
+                                      // HTML teglarni tozalash
+                                      tempContent = tempContent.replace(/<\/?[^>]+(>|$)/g, '');
+                                      // Maxsus belgilarni tozalash
+                                      tempContent = tempContent.replace(/&nbsp;/g, ' ');
+                                      // Paragraflarni ajratish
+                                      paragraphs = tempContent.split(/\n\n+/).filter(p => p.trim() !== '');
+                                      
+                                      // Agar paragraflar kam topilsa, bo'sh joylar bo'yicha bo'lish
+                                      if (paragraphs.length <= 1) {
+                                        paragraphs = cleanContent.split(/\s{2,}/).filter(p => p.trim() !== '');
+                                      }
+                                      
+                                      // Agar bu ham ishlalmasa, belgilar sonini cheklash
+                                      if (paragraphs.length <= 1) {
+                                        const maxCharsPerParagraph = 150;
+                                        paragraphs = [];
+                                        for (let i = 0; i < Math.min(cleanContent.length, 3 * maxCharsPerParagraph); i += maxCharsPerParagraph) {
+                                          paragraphs.push(cleanContent.substring(i, i + maxCharsPerParagraph));
+                                        }
+                                      }
+                                    } catch (e) {
+                                      paragraphs = [cleanContent];
+                                    }
+                                    
+                                    // Faqat birinchi 3 paragrafni olish
+                                    const displayedContent = paragraphs.slice(0, 3).join('\n\n');
+                                    %>
+                                    <%= cleanContent.substring(0, 140) %>...
+                                </p>
+                            </div>
+                        </div>
+                    <% }); 
+                    } else { %>
+                        <div class="col-12">
+                            <p>Bildiriler topilmadi</p>
+                        </div>
+                    <% }
+                } else { %>
+                    <div class="col-12">
+                        <p>Yangilik topilmadi</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <!--  -->
+    <section class="gap islamic-ayat no-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="heading">
+                        <!-- <p>Quranic Verses With Translation</p> -->
+                        <h2>Kur'an'da ihsan ve zekat hakkında</h2>
+                    </div>
+                    <div class="slider-ayat owl-carousel">
+
+                        <!-- 261 AYAT -->
+                        <div class="ayat item">
+                            <!-- <img src="assets/images/ayat.png" alt="ayat"> -->
+                            <h4>
+                                Mallarını Allah yolunda harcayanların durumu, yedi başak bitiren ve her başakta yüz tane bulunan bir tohum gibidir. Allah, dilediğine kat kat verir. Allah, lütfu geniş olandır, hakkıyla bilendir.
+                            </h4>
+                            <h5>Bakara Suresi 261-âyeti</h5>
+                        </div>
+
+                        <!-- 271 AYAT -->
+                        <div class="ayat item">
+                            <!-- <img src="assets/images/ayat.png" alt="ayat"> -->
+                            <h4>
+                                Eğer sadakaları açıkça yaparsanız o ne iyidir. Ve eğer onları gizlerseniz, ve fakirlere (öylece) verirseniz o sizin için daha hayırlıdır ve sizin günahlarınızdan bir kısmını örter. Ve Allah Teâlâ yaptıklarınızdan haberdardır.
+                            </h4>
+                            <h5>Bakara Suresi 271-âyeti</h5>
+                        </div>
+
+                        <!-- 274 AYAT -->
+                        <div class="ayat item">
+                            <!-- <img src="assets/images/ayat.png" alt="ayat"> -->
+                            <h4>
+                                Onlar ki, mallarını gece ve gündüz, gizli ve âşikâre olarak infak ederler, artık onlar için Rableri nezdinde mükâfaatları vardır. Ve onlara bir korku yoktur ve onlar mahzun da olmayacaklardır.
+                            </h4>
+                            <h5>Bakara Suresi 274-âyeti</h5>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ayat-img">
+                        <!-- <img src="https://winsfolio.net/html/ibadah/assets/images/ayat-with-man.png" alt="img" width="392" height="463"> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img src="/assets/images/bread.jpg" class="ayat-with-img" style="object-fit: contain; object-position: right;" alt="ayat-with" width="842" height="549">
+    </section>
+
+    <!--  -->
+    <section class="section-navigating gap">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-6">
+                    <div class="img-navigating hoverimg">
+                        <figure>
+                            <img style="object-fit: cover;" src="/assets/images/any/cow.jpg" alt="img" width="300" height="520">
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="img-navigating two hoverimg">
+                        <figure>
+                            <img src="/assets/images/any/sheep.png" alt="img"width="300" height="520">
+                        </figure>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="navigating-life">
+                        <div class="d-flex align-items-center">
+                            <div class="location">
+                                <i class="fa-regular fa-clock"></i><span>Haziran 6, 2025</span>
+                            </div>
+                            <div class="location">
+                                <i>
+                                    <svg width="24px" height="24px" viewBox="-4 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <g transform="translate(-104.000000, -411.000000)" fill="#007d3a">
+                                            <path d="M116,426 C114.343,426 113,424.657 113,423 C113,421.343 114.343,420 116,420 C117.657,420 119,421.343 119,423 C119,424.657 117.657,426 116,426 L116,426 Z M116,418 C113.239,418 111,420.238 111,423 C111,425.762 113.239,428 116,428 C118.761,428 121,425.762 121,423 C121,420.238 118.761,418 116,418 L116,418 Z M116,440 C114.337,440.009 106,427.181 106,423 C106,417.478 110.477,413 116,413 C121.523,413 126,417.478 126,423 C126,427.125 117.637,440.009 116,440 L116,440 Z M116,411 C109.373,411 104,416.373 104,423 C104,428.018 114.005,443.011 116,443 C117.964,443.011 128,427.95 128,423 C128,416.373 122.627,411 116,411 L116,411 Z">
+                                            </path>
+                                        </g>
+                                    </g>
+                                </svg>
+                                </i><span>İstanbul / Türkiye </span>
+                            </div>
+                        </div>
+                        <h2>Kurban Bayramı için kurbanlık bağışı</h2>
+                        <div id="countdown">
+                            <ul>
+                                <li><span id="days"></span>Gün</li>
+                                <li><span id="hours"></span>Saat</li>
+                                <li><span id="minutes"></span>Dakika</li>
+                                <li class="mb-0"><span id="seconds"></span>Saniye</li>
+                            </ul>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <a href="#" class="btn">Bağış yapmak</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!--  -->
+    <section class="gap">
+        <div class="container">
+            <div class="heading">
+                <img src="assets/images/heading-img.png" alt="icon" width="100" height="132.5">
+                <h2>Gelecek projelerimiz</h2>
+            </div>
+            <div class="row">
+
+
+                <!-- MEDICINE -->
+                <div class="col-lg-3 col-sm-6">
+
+                    <div class="courses">
+                        <div class="courses-img">
+                            <figure>
+                                <img src="/assets/images/projects/medicine.jpg" alt="img" style="object-position: right;">
+                            </figure>
+                            <a href="#"><i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="h-100 d-flex flex-column justify-content-between">
+                            <div class="courses-text">
+                                <a href="#">Sağlık kurumları</a>
+                                <span>Destek ihitiyacı duyan hastalar va sıradan vatandaş hizmetine yönelik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FARM -->
+                <div class="col-lg-3 col-sm-6">
+
+                    <div class="courses mb-sm-0">
+                        <div class="courses-img">
+                            <figure>
+                                <img src="/assets/images/projects/farm.jpg" alt="img">
+                            </figure>
+                            <a href="#"><i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="h-100 d-flex flex-column justify-content-between">
+                            <div class="courses-text">
+                                <a href="#">Çiftlik işleri</a>
+                                <span>Yerli üretim et ve yumurta ürünlerini sağlama amaçlı çiftlik faaliyetleri</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOCIAL HELP -->
+                <div class="col-lg-3 col-sm-6">
+
+                    <div class="courses mb-0 justify-content-between">
+                        <div>
+                            <div class="courses-img">
+                                <figure>
+                                    <img src="/assets/images/projects/container.jpg" alt="img">
+                                </figure>
+                                <a href="#"><i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="h-100 d-flex flex-column justify-content-between">
+                            <div class="courses-text" style="
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            flex-grow: 1;
+                        ">
+                                <a href="#">Sosyal yardımlar</a>
+                                <span>Destek ihtiyacı duyan vatandaşlara ve uzak bölgedeki muhtaçlara yönelik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- TIJORAT -->
+                <div class="col-lg-3 col-sm-6" >
+                    <div class="courses">
+                        <div class="courses-img">
+                            <figure>
+                                <img src="/assets/images/projects/tijorat.jpg" alt="img">
+                            </figure>
+                            <a href="#"><i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="">
+                            <div class="courses-text">
+                                <a href="#">Ticaret</a>
+                                <span>Vakfın sadece bağış ve yardımlara bağımlı kalmamasını sağlayan bir dizi ticari projeler</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+
+    <!-- Footer partial -->
+    <%- include('./partials/site/footer') %>
+
+    <!-- search-popup -->
+    <div class="search-popup">
+        <button class="close-search"><i class="fa-solid fa-xmark"></i></button>
+        <form method="post" action="#">
+            <div class="form-group">
+                <input type="search" name="search-field" value="" placeholder="Burada Ara" required="">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <!-- search-popup end -->
+    <!-- progress -->
+    <div id="progress">
+        <span id="progress-value"><i class="fa-solid fa-up-long"></i></span>
+    </div>
+    <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.nice-select.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/circle-progres.js"></script>
+    <!-- fancybox -->
+    <script src="assets/js/jquery.fancybox.min.js"></script>
+    <script src="assets/js/audioplayer.js"></script>
+    <script>
+        $(function() {
+            $('audio').audioPlayer();
+        });
+    </script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/slider.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

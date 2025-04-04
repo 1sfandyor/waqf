@@ -1,30 +1,80 @@
 const News = require('../models/News');
+const Slider = require('../models/Slider');
 
 // Bosh sahifa
-exports.getHomePage = (req, res) => {
-  res.redirect('/news');
+exports.getHomePage = async (req, res) => {
+  try {
+    // Faol slayderlarni tartib bilan chiqarish
+    const sliders = await Slider.find({ active: true }).sort({ order: 1 }).limit(5);
+    
+    // Kategoriyalar bo'yicha yangiliklar
+    // Duyurular - news kategoriyasi
+    const duyurular = await News.find({ 
+      status: 'published', 
+      category: 'news' 
+    }).sort({ createdAt: -1 }).limit(6);
+    
+    // Barcha yangiliklar - sidebar uchun
+    const latestNews = await News.find({ 
+      status: 'published'
+    }).sort({ createdAt: -1 }).limit(12);
+    
+    res.render('index', {
+      title: 'Ezan Vakfı - Orta Asya halklarının infak eli',
+      sliders,
+      duyurular,
+      latestNews
+    });
+    
+  } catch (err) {
+    console.error('Bosh sahifani yuklashda xatolik:', err);
+    res.status(500).render('error', {
+      message: 'Bosh sahifani yuklashda xatolik yuz berdi',
+      error: { status: 500, stack: err.stack }
+    });
+  }
 };
 
 // Yangiliklar sahifasi
 exports.getNewsPage = async (req, res) => {
   try {
+    // Kategoriya filtri
+    const category = req.query.category;
+    let filter = { status: 'published' };
+    
+    // Agar kategoriya berilgan bo'lsa, uni filtrga qo'shish
+    if (category) {
+      filter.category = category;
+    }
+    
     // Chop etilgan yangiliklar
-    const news = await News.find({ status: 'published' })
+    const news = await News.find(filter)
       .sort({ createdAt: -1 })
       .lean();
     
     // So'nggi yangiliklar (sidebar uchun)
     const recentNews = await News.find({ status: 'published' })
       .sort({ createdAt: -1 })
-      .limit(3)
+      .limit(5)
       .lean();
     
     console.log('Yangiliklar yuklandi:', news.length);
     
+    // Sarlavha kategoriyaga qarab o'zgarishi
+    let pageTitle = 'Yangiliklar - Ezan Vakfı';
+    if (category === 'news') {
+      pageTitle = 'Duyurular - Ezan Vakfı';
+    } else if (category === 'notes') {
+      pageTitle = 'Bildiriler - Ezan Vakfı';
+    } else if (category === 'future_project') {
+      pageTitle = 'Gelecek projelerimiz - Ezan Vakfı';
+    }
+    
     res.render('news', {
-      title: 'Yangiliklar - Ezan Vakfı',
+      title: pageTitle,
       news,
-      recentNews
+      recentNews,
+      category: category || 'all'
     });
   } catch (err) {
     console.error('Yangiliklar yuklashda xatolik:', err);

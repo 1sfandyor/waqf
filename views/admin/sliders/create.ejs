@@ -1,0 +1,159 @@
+<%- include('../../partials/admin/header') %>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Yangi Slayder Qo'shish</h4>
+        <a href="/admin/sliders" class="btn btn-secondary">Orqaga</a>
+      </div>
+      <div class="card-body">
+        <% if (typeof messages != 'undefined' && messages.error) { %>
+          <div class="alert alert-danger alert-dismissible fade show">
+            <%= messages.error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% } %>
+
+        <% if (typeof errors != 'undefined' && errors.length > 0) { %>
+          <div class="alert alert-danger alert-dismissible fade show">
+            <ul class="mb-0">
+              <% errors.forEach(function(error) { %>
+                <li><%= error.msg %></li>
+              <% }); %>
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <% } %>
+
+        <form method="POST" action="/admin/sliders/create" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="titleType" id="titleTypeText" value="text" checked onclick="toggleTitleType()">
+                  <label class="form-check-label" for="titleTypeText">
+                    Matn sarlavha qo'shish
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="titleType" id="titleTypeImage" value="image" onclick="toggleTitleType()">
+                  <label class="form-check-label" for="titleTypeImage">
+                    Rasm sarlavha qo'shish
+                  </label>
+                </div>
+              </div>
+
+              <!-- Matn sarlavha -->
+              <div class="mb-3" id="titleTextBlock">
+                <label for="title" class="form-label">Sarlavha (ixtiyoriy)</label>
+                <input type="text" class="form-control" id="title" name="title" 
+                       value="<%= typeof slider != 'undefined' && slider.title ? slider.title : '' %>">
+              </div>
+
+              <!-- Rasm sarlavha -->
+              <div class="mb-3" id="titleImageBlock" style="display:none;">
+                <label for="titleImage" class="form-label">Sarlavha rasmi (ixtiyoriy)</label>
+                <input type="file" class="form-control" id="titleImage" name="titleImage" accept="image/*">
+                <small class="text-muted">Tavsiya etilgan o'lcham: 400x152</small>
+                <div class="mt-2">
+                  <img id="titleImagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="description" class="form-label">Tavsif (ixtiyoriy)</label>
+                <textarea class="form-control" id="description" name="description" rows="3"><%= typeof slider != 'undefined' && slider.description ? slider.description : '' %></textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="buttonText" class="form-label">Tugma matni (ixtiyoriy)</label>
+                <input type="text" class="form-control" id="buttonText" name="buttonText" 
+                       value="<%= typeof slider != 'undefined' && slider.buttonText ? slider.buttonText : '' %>">
+              </div>
+
+              <div class="mb-3">
+                <label for="buttonLink" class="form-label">Tugma havolasi (ixtiyoriy)</label>
+                <input type="text" class="form-control" id="buttonLink" name="buttonLink" 
+                       value="<%= typeof slider != 'undefined' && slider.buttonLink ? slider.buttonLink : '#' %>">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Status</label>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="active" id="activeYes" value="true" 
+                         <%= typeof slider == 'undefined' || slider.active ? 'checked' : '' %>>
+                  <label class="form-check-label" for="activeYes">
+                    Aktiv
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="active" id="activeNo" value="false" 
+                         <%= typeof slider != 'undefined' && !slider.active ? 'checked' : '' %>>
+                  <label class="form-check-label" for="activeNo">
+                    Faol emas
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="image" class="form-label">Rasm</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                <small class="text-muted">Tavsiya etilgan o'lcham: 1920x780</small>
+                <div class="mt-2">
+                  <img id="imagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Saqlash</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script>
+  // Rasm oldindan ko'rish
+  document.getElementById('image').onchange = function(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var output = document.getElementById('imagePreview');
+      output.src = reader.result;
+      output.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  // Sarlavha rasm oldindan ko'rish
+  document.getElementById('titleImage').onchange = function(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var output = document.getElementById('titleImagePreview');
+      output.src = reader.result;
+      output.style.display = 'block';
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  // Sarlavha turini almashtirish
+  function toggleTitleType() {
+    var titleTextBlock = document.getElementById('titleTextBlock');
+    var titleImageBlock = document.getElementById('titleImageBlock');
+    
+    if (document.getElementById('titleTypeText').checked) {
+      titleTextBlock.style.display = 'block';
+      titleImageBlock.style.display = 'none';
+    } else {
+      titleTextBlock.style.display = 'none';
+      titleImageBlock.style.display = 'block';
+    }
+  }
+</script> 

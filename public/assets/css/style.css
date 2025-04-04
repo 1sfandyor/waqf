@@ -957,7 +957,7 @@ span.flaticon-multiply i {
     border-bottom-right-radius: 151px;
     padding-bottom: 100px;
     position: relative;
-    background-image: url(../img/color-bg.jpg);
+    background-image: url(../images/color-bg.jpg);
     overflow: hidden;
     margin-left: -1px;
     border-top: 0;
@@ -4539,4 +4539,9 @@ ul.photo-gallery figure:before,.mobile-nav > ul > li.menu-item-has-children:befo
 
 .list-info  li {
     font-size: 16px !important;
+}
+
+
+.news-content h5 {
+    text-align: start;
 }
