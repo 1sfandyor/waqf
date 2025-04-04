@@ -1,0 +1,231 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Galereyani tahrirlash</h2>
+      </div>
+    </div>
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/admin/gallery">Galereya</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Tahrirlash
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <h6 class="mb-25">Galereya ma'lumotlari</h6>
+      
+      <!-- Alert Messages -->
+      <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+        <div class="alert-box danger-alert">
+          <div class="alert">
+            <p class="text-medium"><%= error_msg %></p>
+            <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+              <i class="lni lni-close"></i>
+            </button>
+          </div>
+        </div>
+      <% } %>
+      
+      <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+        <div class="alert-box success-alert">
+          <div class="alert">
+            <p class="text-medium"><%= success_msg %></p>
+            <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+              <i class="lni lni-close"></i>
+            </button>
+          </div>
+        </div>
+      <% } %>
+      
+      <form action="/admin/gallery/<%= gallery._id %>/edit" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="input-style-1 mb-4">
+              <label for="title">Sarlavha</label>
+              <input type="text" id="title" name="title" placeholder="Galereya sarlavhasi" value="<%= gallery.title %>" required>
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label for="description">Tavsif</label>
+              <textarea id="description" name="description" rows="3" placeholder="Galereya tavsifi"><%= gallery.description %></textarea>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="select-style-1 mb-4">
+                  <label for="category">Kategoriya</label>
+                  <div class="select-position">
+                    <select id="category" name="category">
+                      <option value="Tadbirlar" <%= gallery.category === 'Tadbirlar' ? 'selected' : '' %>>Tadbirlar</option>
+                      <option value="Loyihalar" <%= gallery.category === 'Loyihalar' ? 'selected' : '' %>>Loyihalar</option>
+                      <option value="Boshqa" <%= gallery.category === 'Boshqa' ? 'selected' : '' %>>Boshqa</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="input-style-1 mb-4">
+                  <label for="tags">Teglar (vergul bilan ajrating)</label>
+                  <input type="text" id="tags" name="tags" placeholder="tag1, tag2, tag3" value="<%= gallery.tags.join(', ') %>">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Add new images -->
+            <div class="input-style-1 mb-4">
+              <label for="images">Yangi rasmlar qo'shish (ixtiyoriy)</label>
+              <input type="file" id="images" name="images" class="form-control-file" multiple accept="image/*">
+              
+              <!-- Image preview -->
+              <div id="imagePreview" class="mt-3 d-flex flex-wrap gap-2"></div>
+            </div>
+          </div>
+          
+          <div class="col-md-5">
+            <div class="form-elements-wrapper mb-4">
+              <div class="checkbox-style-1 mb-4">
+                <label>Holat</label>
+                <div>
+                  <label class="radio-style-1 mb-2">
+                    <input type="radio" name="status" value="draft" <%= gallery.status === 'draft' ? 'checked' : '' %>>
+                    <span>Qoralama</span>
+                  </label>
+                  <label class="radio-style-1">
+                    <input type="radio" name="status" value="published" <%= gallery.status === 'published' ? 'checked' : '' %>>
+                    <span>Chop etish</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Current images -->
+            <div class="mb-4">
+              <label class="mb-3">Mavjud rasmlar</label>
+              <div class="row g-3" id="existingImages">
+                <% if (gallery.images && gallery.images.length > 0) { %>
+                  <% gallery.images.forEach((image, index) => { %>
+                    <div class="col-md-6">
+                      <div class="card border h-100">
+                        <img src="<%= image.path %>" class="card-img-top" alt="<%= gallery.title %>" style="height: 120px; object-fit: cover;">
+                        <div class="card-body p-3">
+                          <div class="input-style-1 mb-2">
+                            <input type="text" name="imageCaption_<%= index %>" placeholder="Sarlavha" value="<%= image.caption %>">
+                          </div>
+                          <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="mainImage_<%= index %>" name="imageActions" value="main:<%= index %>" <%= image.isMainImage ? 'checked' : '' %>>
+                            <label class="form-check-label" for="mainImage_<%= index %>">
+                              Asosiy rasm
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="deleteImage_<%= index %>" name="imageActions" value="delete:<%= index %>">
+                            <label class="form-check-label text-danger" for="deleteImage_<%= index %>">
+                              O'chirish
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% }); %>
+                <% } else { %>
+                  <div class="col-12">
+                    <div class="alert-box info-alert">
+                      <div class="alert">
+                        <p class="text-medium">Hozircha rasmlar mavjud emas.</p>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="button-group mt-4">
+          <button type="submit" class="main-btn primary-btn btn-hover">Saqlash</button>
+          <a href="/admin/gallery" class="main-btn light-btn btn-hover ml-2">Bekor qilish</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script>
+  // Preview selected images
+  document.getElementById('images').addEventListener('change', function() {
+    const previewContainer = document.getElementById('imagePreview');
+    previewContainer.innerHTML = '';
+    
+    if (this.files) {
+      Array.from(this.files).forEach(file => {
+        if (file.type.match('image.*')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.classList.add('img-thumbnail', 'me-2', 'mb-2');
+            img.style.height = '100px';
+            img.style.objectFit = 'cover';
+            img.src = e.target.result;
+            previewContainer.appendChild(img);
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+  
+  // Ensure only one main image is selected
+  document.querySelectorAll('input[name="imageActions"][value^="main:"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        document.querySelectorAll('input[name="imageActions"][value^="main:"]').forEach(otherCheckbox => {
+          if (otherCheckbox !== this) {
+            otherCheckbox.checked = false;
+          }
+        });
+      }
+    });
+  });
+  
+  // Prevent deletion of the main image
+  document.querySelectorAll('input[name="imageActions"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const value = this.value;
+      if (value.startsWith('delete:')) {
+        const index = value.split(':')[1];
+        const mainCheckbox = document.getElementById(`mainImage_${index}`);
+        
+        if (this.checked && mainCheckbox.checked) {
+          alert('Asosiy rasmni o\'chirib bo\'lmaydi. Avval boshqa rasmni asosiy qilib belgilang.');
+          this.checked = false;
+        }
+      }
+    });
+  });
+</script> 

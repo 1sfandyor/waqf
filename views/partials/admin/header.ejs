@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> | Ezan Vakfı Admin</title>
+
+  <!-- ========== All CSS files linkup ========= -->
+  <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/css/lineicons.css" />
+  <link rel="stylesheet" href="/assets/css/materialdesignicons.min.css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <!-- Custom CSS -->
+  <style>
+    .required::after {
+      content: "*";
+      color: red;
+      margin-left: 3px;
+    }
+    
+    /* Ezan Vakfi theme colors */
+    :root {
+      --primary-color: #007d3a;
+      --secondary-color: #fbc50b;
+    }
+    
+    .sidebar-nav .nav-item.active > .nav-link {
+      background: var(--primary-color);
+    }
+    
+    .button-primary {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .button-primary:hover {
+      background: #006030;
+      border-color: #006030;
+    }
+  </style>
+</head>
+<body>
+  <!-- ======== Preloader =========== -->
+  <div id="preloader">
+    <div class="spinner"></div>
+  </div>
+  <!-- ======== Preloader =========== -->
+
+  <!-- ======== sidebar-nav start =========== -->
+  <aside class="sidebar-nav-wrapper" style="transform: translateX(-100%);">
+    <div class="navbar-logo">
+      <a href="/admin">
+        <span style="margin-left: 10px; font-weight: bold; font-size: 18px;">Ezan Vakfı</span>
+      </a>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <%- include('sidebar') %>
+    </nav>
+  </aside>
+  <div class="overlay"></div>
+  <!-- ======== sidebar-nav end =========== -->
+
+  <!-- ======== main-wrapper start =========== -->
+  <main class="main-wrapper" style="margin-left: 0;">
+    <!-- ========== header start ========== -->
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-6">
+            <div class="header-left d-flex align-items-center">
+              <div class="menu-toggle-btn mr-15">
+                <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                  <i class="lni lni-chevron-left me-2"></i> Menu
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7 col-6">
+            <div class="header-right">
+              <!-- profile start -->
+              <div class="profile-box ml-15">
+                <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile" data-bs-toggle="dropdown" aria-expanded="false">
+                  <div class="profile-info">
+                    <div class="info">
+                      <div class="image">
+                        <img src="/assets/images/profile/profile-image.png" alt="" />
+                      </div>
+                      <div>
+                        <h6 class="fw-500"><%= user.username %></h6>
+                        <p><%= user.role === 'admin' ? 'Administrator' : 'Editor' %></p>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                  <li>
+                    <a href="/admin/profile"> <i class="lni lni-user"></i> Profil </a>
+                  </li>
+                  <li>
+                    <a href="/auth/logout"> <i class="lni lni-exit"></i> Chiqish </a>
+                  </li>
+                </ul>
+              </div>
+              <!-- profile end -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ========== header end ========== -->
+
+    <!-- ========== section start ========== -->
+    <section class="section">
+      <div class="container-fluid">
+      <!-- Content goes here -->
+    </div>
+  </main>
+</body>
+</html> 

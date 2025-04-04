@@ -1,0 +1,172 @@
+<%- include('../partials/admin/header') %>
+<%- include('../partials/admin/sidebar') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Profil</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin">Bosh sahifa</a></li>
+            <li class="breadcrumb-item active">Profil</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img class="profile-user-img img-fluid img-circle"
+                     src="/assets/admin/img/user-profile.png"
+                     alt="User profile picture">
+              </div>
+
+              <h3 class="profile-username text-center"><%= user.username %></h3>
+
+              <p class="text-muted text-center"><%= user.role === 'admin' ? 'Administrator' : 'Tahrir qiluvchi' %></p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Email</b> <a class="float-right"><%= user.email %></a>
+                </li>
+                <li class="list-group-item">
+                  <b>So'nggi kirish</b> <a class="float-right"><%= user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Mavjud emas' %></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Ro'yxatdan o'tgan sana</b> <a class="float-right"><%= new Date(user.createdAt).toLocaleDateString() %></a>
+                </li>
+              </ul>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Sozlamalar</a></li>
+                <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">Parolni o'zgartirish</a></li>
+              </ul>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <!-- Flash Messages -->
+              <% if (messages.success) { %>
+                <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <%= messages.success %>
+                </div>
+              <% } %>
+              
+              <% if (messages.error) { %>
+                <div class="alert alert-danger alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <%= messages.error %>
+                </div>
+              <% } %>
+              
+              <div class="tab-content">
+                <div class="active tab-pane" id="settings">
+                  <form class="form-horizontal" action="/admin/profile/update" method="POST">
+                    <div class="form-group row">
+                      <label for="inputName" class="col-sm-2 col-form-label">Foydalanuvchi nomi</label>
+                      <div class="col-sm-10">
+                        <input type="text" class="form-control" id="inputName" name="username" placeholder="Foydalanuvchi nomi" value="<%= user.username %>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                      <div class="col-sm-10">
+                        <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="<%= user.email %>">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-sm-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Saqlash</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+                
+                <div class="tab-pane" id="password">
+                  <form class="form-horizontal" action="/admin/profile/update" method="POST">
+                    <div class="form-group row">
+                      <label for="currentPassword" class="col-sm-3 col-form-label">Joriy parol</label>
+                      <div class="col-sm-9">
+                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Joriy parol" required>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="newPassword" class="col-sm-3 col-form-label">Yangi parol</label>
+                      <div class="col-sm-9">
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Yangi parol" required>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label for="confirmPassword" class="col-sm-3 col-form-label">Yangi parolni tasdiqlash</label>
+                      <div class="col-sm-9">
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Yangi parolni tasdiqlash" required>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-sm-3 col-sm-9">
+                        <button type="submit" class="btn btn-primary">Parolni o'zgartirish</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../partials/admin/footer') %>
+
+<script>
+  $(function () {
+    // Password confirmation validation
+    $('#confirmPassword').on('keyup', function() {
+      const newPassword = $('#newPassword').val();
+      const confirmPassword = $(this).val();
+      
+      if (newPassword === confirmPassword) {
+        $(this).removeClass('is-invalid').addClass('is-valid');
+      } else {
+        $(this).removeClass('is-valid').addClass('is-invalid');
+      }
+    });
+    
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+      $(".alert").fadeOut("slow");
+    }, 5000);
+  });
+</script> 

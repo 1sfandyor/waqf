@@ -1,0 +1,82 @@
+      </div>
+      <!-- end container -->
+    </section>
+    <!-- ========== section end ========== -->
+
+    <!-- ========== footer start =========== -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6 order-last order-md-first">
+            <div class="copyright text-center text-md-start">
+              <p class="text-sm">
+                &copy; <%= new Date().getFullYear() %> <a href="/" rel="nofollow" target="_blank">Ezan Vakfı</a>
+              </p>
+            </div>
+          </div>
+          <!-- end col-->
+          <div class="col-md-6">
+            <div class="terms d-flex justify-content-center justify-content-md-end">
+              <p class="text-sm">Barcha huquqlar himoyalangan</p>
+            </div>
+          </div>
+        </div>
+        <!-- end row -->
+      </div>
+      <!-- end container -->
+    </footer>
+    <!-- ========== footer end =========== -->
+  </main>
+  <!-- ======== main-wrapper end =========== -->
+
+  <!-- ========= All Javascript files linkup ======== -->
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/Chart.min.js"></script>
+  <script src="/assets/js/dynamic-pie-chart.js"></script>
+  <script src="/assets/js/moment.min.js"></script>
+  <script src="/assets/js/fullcalendar.js"></script>
+  <script src="/assets/js/jvectormap.min.js"></script>
+  <script src="/assets/js/world-merc.js"></script>
+  <script src="/assets/js/polyfill.js"></script>
+  <script src="/assets/js/main.js"></script>
+  
+  <!-- Custom Scripts -->
+  <script>
+    // Confirm delete
+    document.querySelectorAll('.btn-delete').forEach(function(button) {
+      button.addEventListener('click', function(e) {
+        if (!confirm('Rostdan ham bu elementni o\'chirmoqchimisiz?')) {
+          e.preventDefault();
+        }
+      });
+    });
+    
+    // Image preview
+    document.querySelectorAll('.form-control-file, .form-control[type="file"]').forEach(function(input) {
+      input.addEventListener('change', function() {
+        const fileName = this.value.split('\\').pop();
+        const label = this.nextElementSibling;
+        if (label && label.classList.contains('custom-file-label')) {
+          label.textContent = fileName;
+        }
+        
+        // Preview image if this is an image input
+        if (this.files && this.files[0]) {
+          const preview = this.closest('.form-group')?.querySelector('.img-preview');
+          
+          if (preview) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.closest('.preview-container').style.display = 'block';
+            };
+            
+            reader.readAsDataURL(this.files[0]);
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html> 

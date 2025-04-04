@@ -1,0 +1,407 @@
+.author-name {
+  font-family: var(--common-font);
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+/* Slider Styles */
+.slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  height: 220px; /* Default height for mobile */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.slides {
+  width: 300%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  width: 33.33%;
+  position: relative;
+}
+
+/* Link styles */
+.slide-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.slide-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 15px;
+  width: 100%;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
+
+.slide-title {
+  font-family: var(--common-font) !important;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+/* Slider indicators */
+.slider-indicators {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.indicator.active {
+  background-color: white;
+}
+
+/* Navigation arrows */
+.slider-nav {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.nav-btn {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-arrow {
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.arrow-left {
+  transform: rotate(135deg);
+}
+
+.arrow-right {
+  transform: rotate(-45deg);
+}
+
+.tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  margin-right: 8px;
+}
+
+.time {
+  color: #ddd;
+  font-size: 10px;
+}
+
+.side-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.side-article {
+  display: flex;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  height: calc((100% - 30px) / 3); 
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.side-article:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.side-article-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  text-decoration: none;
+  color: inherit;
+}
+
+.side-article-content {
+  padding: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-article-title {
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.side-article-desc {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+  display: none; /* Hide description on mobile */
+  flex-grow: 1;
+}
+
+.side-article-img {
+  width: 80px;
+  object-fit: cover;
+}
+
+/* Tablet Styles (481px - 768px) */
+@media (min-width: 481px) {
+  .slider {
+      height: 280px;
+  }
+
+  .slide-title {
+      font-size: 20px;
+      font-family: var(--common-font) !important;
+  }
+
+  .slide-content {
+      padding: 18px;
+  }
+
+  .indicator {
+      width: 10px;
+      height: 10px;
+  }
+
+  .nav-btn {
+      width: 35px;
+      height: 35px;
+  }
+
+  .nav-arrow {
+      padding: 4px;
+  }
+
+  .tag {
+      font-size: 11px;
+      padding: 4px 7px;
+  }
+
+  .time {
+      font-size: 11px;
+  }
+
+  .side-article-title {
+      font-size: 15px;
+  }
+
+  .side-article-desc {
+      display: block;
+  }
+
+  .side-article-img {
+      width: 100px;
+  }
+}
+
+/* Laptop Styles (769px - 1024px) */
+@media (min-width: 769px) {
+  
+
+  .news-grid {
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      align-items: stretch;
+      height: auto;
+  }
+
+  .slider {
+      height: 100%; /* Make slider height equal to the side articles container */
+  }
+
+  .side-articles {
+      height: 100%;
+  }
+
+  .slide-title {
+      font-size: 22px;
+      font-family: var(--common-font) !important;
+  }
+
+  .slide-content {
+      padding: 20px;
+  }
+
+  .slider-indicators {
+      bottom: 15px;
+      right: 15px;
+      gap: 8px;
+  }
+
+  .indicator {
+      width: 10px;
+      height: 10px;
+  }
+
+  .nav-btn {
+      width: 38px;
+      height: 38px;
+  }
+
+  .nav-arrow {
+      padding: 4px;
+      border-width: 0 3px 3px 0;
+  }
+
+  .tag {
+      font-size: 12px;
+      padding: 4px 8px;
+  }
+
+  .time {
+      font-size: 12px;
+  }
+
+  .side-article-content {
+      padding: 15px;
+  }
+
+  .side-article-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+  }
+
+  .side-article-desc {
+      line-height: 21px;
+      font-size: 13px;
+      margin-bottom: 8px;
+  }
+
+  .side-article-img {
+      width: 110px;
+  }
+}
+
+/* Desktop/PC Styles (1025px and above) */
+@media (min-width: 1025px) {
+  
+  .slide-title {
+      font-size: 26px;
+      margin-bottom: 12px;
+      font-family: var(--common-font) !important;
+  }
+
+  .slide-content {
+      padding: 25px;
+  }
+
+  .slider-indicators {
+      bottom: 20px;
+      right: 20px;
+  }
+
+  .indicator {
+      width: 12px;
+      height: 12px;
+  }
+
+  .nav-btn {
+      width: 45px;
+      height: 45px;
+  }
+
+  .nav-arrow {
+      padding: 5px;
+  }
+
+  .side-articles {
+      gap: 20px;
+  }
+
+  .side-article-content {
+      padding: 18px;
+  }
+
+  .side-article-title {
+      font-size: 18px;
+      margin-bottom: 10px;
+  }
+
+  .side-article-desc {
+      font-size: 14px;
+      margin-bottom: 10px;
+  }
+
+  .side-article-img {
+      width: 120px;
+  }
+}
+
+/* Large Desktop Styles (1440px and above) */
+@media (min-width: 1440px) {
+  .side-article-img {
+      width: 140px;
+  }
+}

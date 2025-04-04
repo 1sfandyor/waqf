@@ -1,0 +1,144 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30 container">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Yangi yangilik qo'shish</h2>
+      </div>
+    </div>
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/admin/news">Yangiliklar</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Yangi qo'shish
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="row container mx-auto">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <h6 class="mb-25">Yangilik ma'lumotlari</h6>
+      
+      <% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length > 0) { %>
+        <div class="alert-box success-alert">
+          <div class="alert">
+            <p class="text-medium"><%= success_msg %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length > 0) { %>
+        <div class="alert-box danger-alert">
+          <div class="alert">
+            <p class="text-medium"><%= error_msg %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <% if (typeof error !== 'undefined' && error && error.length > 0) { %>
+        <div class="alert-box danger-alert">
+          <div class="alert">
+            <p class="text-medium"><%= error %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <form action="/admin/news/create" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-style-1 mb-4">
+              <label for="title" class="required">Sarlavha</label>
+              <input type="text" name="title" id="title" placeholder="Yangilik sarlavhasi" required
+                value="<%= typeof formData !== 'undefined' ? formData.title || '' : '' %>">
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label for="content" class="required">Kontent</label>
+              <textarea name="content" id="content" rows="10" placeholder="Yangilik matni" required><%= typeof formData !== 'undefined' ? formData.content || '' : '' %></textarea>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="select-style-1 mb-4">
+                  <label for="category">Kategoriya</label>
+                  <div class="select-position">
+                    <select name="category" id="category">
+                      <option value="Vakf hayati" <%= typeof formData !== 'undefined' && formData.category === 'Vakf hayati' ? 'selected' : '' %>>Vakf hayati</option>
+                      <option value="Duyurular" <%= typeof formData !== 'undefined' && formData.category === 'Duyurular' ? 'selected' : '' %>>Duyurular</option>
+                      <option value="Boshqa" <%= typeof formData !== 'undefined' && formData.category === 'Boshqa' ? 'selected' : '' %>>Boshqa</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="input-style-1 mb-4">
+                  <label for="tags">Teglar (vergul bilan ajrating)</label>
+                  <input type="text" name="tags" id="tags" placeholder="yangilik, vakf, ..."
+                    value="<%= typeof formData !== 'undefined' ? formData.tags || '' : '' %>">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="input-style-1 mb-4">
+              <label for="image" class="required">Asosiy rasm</label>
+              <input type="file" name="image" id="image" class="form-control-file" accept="image/*" required>
+              <div class="mt-2 preview-container" style="display: none;">
+                <img src="" alt="Preview" class="img-preview img-fluid rounded">
+              </div>
+            </div>
+            
+            <div class="form-elements-wrapper mb-4">
+              <div class="checkbox-style-1">
+                <label>Holati</label>
+                <div>
+                  <label class="radio-style-1 mb-2">
+                    <input type="radio" name="status" value="published" checked>
+                    <span>Chop etilgan</span>
+                  </label>
+                  <label class="radio-style-1">
+                    <input type="radio" name="status" value="draft" <%= typeof formData !== 'undefined' && formData.status === 'draft' ? 'checked' : '' %>>
+                    <span>Qoralama</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label>Qo'shimcha ma'lumot</label>
+              <p class="text-sm text-medium mb-1">Muallif: <%= user.username %></p>
+              <p class="text-sm text-medium">Sana: <%= new Date().toLocaleDateString() %></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="button-group mt-4">
+          <button type="submit" class="main-btn primary-btn btn-hover">Saqlash</button>
+          <a href="/admin/news" class="main-btn light-btn btn-hover ml-2">Bekor qilish</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %> 

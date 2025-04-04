@@ -1,0 +1,151 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Yangilikni tahrirlash</h2>
+      </div>
+    </div>
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/admin/news">Yangiliklar</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Tahrirlash
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <h6 class="mb-25">Yangilik ma'lumotlari</h6>
+      
+      <% if (typeof error !== 'undefined' && error.length > 0) { %>
+        <div class="alert-box danger-alert">
+          <div class="alert">
+            <p class="text-medium"><%= error %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <form action="/admin/news/<%= news._id %>/update" method="POST" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="input-style-1 mb-4">
+              <label for="title" class="required">Sarlavha</label>
+              <input type="text" name="title" id="title" placeholder="Yangilik sarlavhasi" required
+                value="<%= news.title %>">
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label for="content" class="required">Kontent</label>
+              <textarea name="content" id="content" rows="10" placeholder="Yangilik matni" required><%= news.content %></textarea>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6">
+                <div class="select-style-1 mb-4">
+                  <label for="category">Kategoriya</label>
+                  <div class="select-position">
+                    <select name="category" id="category">
+                      <option value="Vakf hayati" <%= news.category === 'Vakf hayati' ? 'selected' : '' %>>Vakf hayati</option>
+                      <option value="Duyurular" <%= news.category === 'Duyurular' ? 'selected' : '' %>>Duyurular</option>
+                      <option value="Boshqa" <%= news.category === 'Boshqa' ? 'selected' : '' %>>Boshqa</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="input-style-1 mb-4">
+                  <label for="tags">Teglar (vergul bilan ajrating)</label>
+                  <input type="text" name="tags" id="tags" placeholder="yangilik, vakf, ..."
+                    value="<%= news.tags.join(', ') %>">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="input-style-1 mb-4">
+              <label for="image">Asosiy rasm</label>
+              <% if (news.image) { %>
+                <div class="mb-3">
+                  <img src="<%= news.image %>" alt="<%= news.title %>" class="img-fluid rounded" style="max-height: 200px;">
+                  <p class="text-sm text-medium mt-2">Yangi rasm yuklamasangiz, mavjud rasm saqlanadi</p>
+                </div>
+              <% } %>
+              <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
+              <div class="mt-2 preview-container" style="display: none;">
+                <img src="" alt="Preview" class="img-preview img-fluid rounded">
+              </div>
+            </div>
+            
+            <div class="form-elements-wrapper mb-4">
+              <div class="checkbox-style-1">
+                <label>Holati</label>
+                <div>
+                  <label class="radio-style-1 mb-2">
+                    <input type="radio" name="status" value="published" <%= news.status === 'published' ? 'checked' : '' %>>
+                    <span>Chop etilgan</span>
+                  </label>
+                  <label class="radio-style-1">
+                    <input type="radio" name="status" value="draft" <%= news.status === 'draft' ? 'checked' : '' %>>
+                    <span>Qoralama</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label>Qo'shimcha ma'lumot</label>
+              <p class="text-sm text-medium mb-1">Muallif: <%= user.username %></p>
+              <p class="text-sm text-medium mb-1">Yaratilgan sana: <%= new Date(news.createdAt).toLocaleDateString() %></p>
+              <p class="text-sm text-medium">Ko'rishlar soni: <%= news.views %></p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="button-group mt-4">
+          <button type="submit" class="main-btn primary-btn btn-hover">Saqlash</button>
+          <a href="/admin/news" class="main-btn light-btn btn-hover ml-2">Bekor qilish</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script>
+  // Rasm oldindan ko'rish
+  document.getElementById('image').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.querySelector('.img-preview');
+        img.src = e.target.result;
+        document.querySelector('.preview-container').style.display = 'block';
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script> 

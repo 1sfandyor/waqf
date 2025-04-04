@@ -1,0 +1,102 @@
+<ul>
+  <li class="nav-item <% if (path === '/admin/dashboard') { %>active<% } %>">
+    <a href="/admin">
+      <span class="icon">
+        <i class="lni lni-dashboard"></i>
+      </span>
+      <span class="text">Dashboard</span>
+    </a>
+  </li>
+
+  <span class="divider"><hr /></span>
+  
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/news')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_news" aria-controls="ddmenu_news" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-text-format"></i>
+      </span>
+      <span class="text">Yangiliklar</span>
+    </a>
+    <ul id="ddmenu_news" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/news" class="<% if (path === '/admin/news') { %>active<% } %>">Barcha yangiliklar</a>
+      </li>
+      <li>
+        <a href="/admin/news/create" class="<% if (path === '/admin/news/create') { %>active<% } %>">Yangilik qo'shish</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/gallery')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_gallery" aria-controls="ddmenu_gallery" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-image"></i>
+      </span>
+      <span class="text">Galereya</span>
+    </a>
+    <ul id="ddmenu_gallery" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/gallery" class="<% if (path === '/admin/gallery') { %>active<% } %>">Barcha galereyalar</a>
+      </li>
+      <li>
+        <a href="/admin/gallery/create" class="<% if (path === '/admin/gallery/create') { %>active<% } %>">Galereya qo'shish</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/projects')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_projects" aria-controls="ddmenu_projects" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-briefcase"></i>
+      </span>
+      <span class="text">Loyihalar</span>
+    </a>
+    <ul id="ddmenu_projects" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/projects" class="<% if (path === '/admin/projects') { %>active<% } %>">Barcha loyihalar</a>
+      </li>
+      <li>
+        <a href="/admin/projects/create" class="<% if (path === '/admin/projects/create') { %>active<% } %>">Loyiha qo'shish</a>
+      </li>
+    </ul>
+  </li>
+
+  <% if (user && user.role === 'admin') { %>
+  <span class="divider"><hr /></span>
+  
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/users')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_users" aria-controls="ddmenu_users" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-users"></i>
+      </span>
+      <span class="text">Foydalanuvchilar</span>
+    </a>
+    <ul id="ddmenu_users" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/users" class="<% if (path === '/admin/users') { %>active<% } %>">Barcha foydalanuvchilar</a>
+      </li>
+      <li>
+        <a href="/auth/register" class="<% if (path === '/auth/register') { %>active<% } %>">Foydalanuvchi qo'shish</a>
+      </li>
+    </ul>
+  </li>
+  <% } %>
+
+  <li class="nav-item <% if (path === '/admin/profile') { %>active<% } %>">
+    <a href="/admin/profile">
+      <span class="icon">
+        <i class="lni lni-user"></i>
+      </span>
+      <span class="text">Profil</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="/auth/logout">
+      <span class="icon">
+        <i class="lni lni-exit"></i>
+      </span>
+      <span class="text">Chiqish</span>
+    </a>
+  </li>
+</ul> 
