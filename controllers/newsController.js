@@ -195,35 +195,36 @@ exports.deleteNews = async (req, res) => {
 };
 
 // API: Get all published news
-exports.getPublishedNews = async (req, res) => {
+exports.getNewsApi = async (req, res) => {
   try {
     const category = req.query.category;
-    const query = { isPublished: true };
+    const query = { status: 'published' };
     
     if (category) {
       query.category = category;
     }
     
     const news = await News.find(query)
-      .sort({ publishDate: -1 })
-      .populate('author', 'username')
+      .sort({ createdAt: -1 })
+      .select('title slug category image createdAt')
       .lean();
     
     res.status(200).json(news);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch news' });
+    res.status(500).json({ error: 'Yangiliklar olishda xatolik' });
   }
 };
 
 // API: Get a single news by slug
-exports.getNewsBySlug = async (req, res) => {
+exports.getNewsDetailApi = async (req, res) => {
   try {
-    const news = await News.findOne({ slug: req.params.slug, isPublished: true })
-      .populate('author', 'username')
-      .lean();
+    const news = await News.findOne({ 
+      slug: req.params.slug, 
+      status: 'published'
+    }).lean();
     
     if (!news) {
-      return res.status(404).json({ error: 'News not found' });
+      return res.status(404).json({ error: 'Yangilik topilmadi' });
     }
     
     // Increment views
@@ -234,6 +235,6 @@ exports.getNewsBySlug = async (req, res) => {
     
     res.status(200).json(news);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch news' });
+    res.status(500).json({ error: 'Yangilik ma\'lumotlarini olishda xatolik' });
   }
 }; 

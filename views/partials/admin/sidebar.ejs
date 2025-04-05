@@ -61,6 +61,24 @@
     </ul>
   </li>
 
+  <li class="nav-item <%= path && path.includes('/admin/activities') ? 'active' : '' %>">
+    <a href="/admin/activities">
+      <span class="icon">
+        <i class="lni lni-calendar"></i>
+      </span>
+      <span class="text">Faoliyatlar</span>
+    </a>
+  </li>
+
+  <li class="nav-item <%= path && path.includes('/admin/statistics') ? 'active' : '' %>">
+    <a href="/admin/statistics">
+      <span class="icon">
+        <i class="lni lni-bar-chart"></i>
+      </span>
+      <span class="text">Statistika</span>
+    </a>
+  </li>
+
   <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/projects')) { %>active<% } %>">
     <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_projects" aria-controls="ddmenu_projects" aria-expanded="false" aria-label="Toggle navigation">
       <span class="icon">

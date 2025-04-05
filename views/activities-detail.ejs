@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'Ezan Vakfı - Orta Asya halklarının infak eli' %></title>
+    <link rel="icon" href="/assets/images/favicon.png">
+    <!-- CSS only -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css"> 
+    <!-- fancybox -->
+    <link rel="stylesheet" href="/assets/css/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="/assets/css/nice-select.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- style -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/preloader.js"></script>
+</head>
+<body>
+  <!-- preloader -->
+  <div class="preloader">
+    <div class="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+  </div> 
+  <!-- preloader end -->
+
+  <!-- Header partial -->
+  <%- include('./partials/site/header') %>
+
+  <section class="bannr-section" style="background-image: url('<%= activity.image %>'); height: 600px; background-position: top; background-size: cover;">
+    <div class="container">
+        <div class="bannr-text">
+            <img src="/assets/images/heading-img.png" alt="icon" width="100" height="132.5">
+            <h2><%= activity.title %></h2>
+        </div>
+    </div>
+  </section>
+  <section class="pt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="blog-two our-blog hoverimg">
+                    <div class="d-flex align-items-center">
+                        <span>Faaliyetlerimiz</span>
+                    </div>
+                    <h5><%= activity.title %></h5>
+                    <figure> 
+                        <img src="<%= activity.image %>" alt="<%= activity.title %>" width="851" height="471" style="object-fit: cover;">
+                    </figure>
+                    
+                    <div class="activity-description">
+                        <%- activity.description %>
+                    </div>
+                </div>
+                <div class="blog-details-style">                       
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="img-navigating hoverimg">
+                                <figure>
+                                    <img src="<%= activity.image %>" alt="img" width="410" height="261" style="object-fit: cover;">
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="img-navigating hoverimg">
+                                <figure>
+                                    <% if (activity.gallery && activity.gallery.length > 0) { %>
+                                        <img src="<%= activity.gallery[0] %>" alt="img" width="410" height="261" style="object-fit: cover;">
+                                    <% } else { %>
+                                        <img src="<%= activity.image %>" alt="img" width="410" height="261" style="object-fit: cover;">
+                                    <% } %>
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <% if (activity.showQuote && activity.quote) { %>
+                    <div class="quote-color" style="background-image:url(/assets/images/color-bg.jpg);">
+                        <div>
+                            <figure><img src="/assets/images/quote-c.png" alt="quote"></figure>
+                        </div>
+                        <div>
+                            <h5>"<%= activity.quote %>"</h5>
+                            <% if (activity.quoteAuthor) { %>
+                                <h4><%= activity.quoteAuthor %></h4>
+                            <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                    
+                    <% if (activity.gallery && activity.gallery.length > 0 && activity.showGallery) { %>
+                    <div class="video position-relative">
+                        <img src="<%= activity.gallery[0] %>" alt="<%= activity.title %>" width="851" height="471" style="object-fit: cover;">
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <% if (activity.showLessons && activity.lessons && activity.lessons.length > 0) { %>
+                <div class="sidebar">
+                    <h3>DERS MÜFREDATI</h3>
+                    <div class="boder-bar"></div>
+                    <ul class="categories">
+                        <% activity.lessons.forEach(lesson => { %>
+                            <li>
+                                <a href="javascript:void(0)"><%= lesson %></a>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <% } %>
+                
+                <!-- QUICK LINKS -->
+                <div class="sidebar">
+                  <h3>Diğer bölümler:</h3>
+                  <div class="boder-bar"></div>
+                  <ul class="Meta">
+                      <% if (otherActivities && otherActivities.length > 0) { %>
+                          <% otherActivities.forEach(otherActivity => { %>
+                              <li>
+                                  <a href="/activities/<%= otherActivity.slug %>">
+                                      <i class='fa-solid fa-angles-right'></i><%= otherActivity.title %>
+                                  </a>
+                              </li>
+                          <% }); %>
+                      <% } else { %>
+                          <li>
+                              <p>Boshqa faoliyatlar topilmadi</p>
+                          </li>
+                      <% } %>
+                  </ul>
+                </div>
+
+                <!-- GALLERY -->
+                <% if (activity.showGallery && activity.gallery && activity.gallery.length > 0) { %>
+                <div class="sidebar">
+                    <h3>Galerİ</h3>
+                    <div class="boder-bar"></div>
+                    <ul class="photo-gallery">
+                        <% activity.gallery.forEach((image, index) => { %>
+                            <% if (index < 6) { %> <!-- Eng ko'pi bilan 6ta rasm ko'rsatiladi -->
+                            <li>
+                                <a href="<%= image %>" data-fancybox="gallery">
+                                    <figure>
+                                        <img alt="<%= activity.title %> - <%= index+1 %>" src="<%= image %>" width="100" height="100">
+                                    </figure>
+                                </a>
+                            </li>
+                            <% } %>
+                        <% }); %>
+                    </ul>
+                </div>
+                <% } %>
+
+                <!-- SUPPORT CONTACT -->
+                <div class="sidebar sidebar-two" style="background-image: url(/assets/images/color-bg.jpg);">
+                    <h3><%= activity.title %> bölümü ile iletişim:</h3>
+                    <div class="boder-bar"></div>
+                    <p>Bizga aloqaga chiqish uchun</p>
+                    <a href="https://t.me/EzanVakfi" target="_blank" class="btn d-block w-100">Telegram</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Footer partial -->
+  <%- include('./partials/site/footer') %>
+
+  <!-- search-popup -->
+  <div class="search-popup">
+      <button class="close-search"><i class="fa-solid fa-xmark"></i></button>
+      <form method="post" action="#">
+          <div class="form-group">
+              <input type="search" name="search-field" value="" placeholder="Burada Ara" required="">
+              <button type="submit"><i class="fa fa-search"></i></button>
+          </div>
+      </form>
+  </div>
+  <!-- search-popup end -->
+  
+  <!-- progress -->
+  <div id="progress">
+      <span id="progress-value"><i class="fa-solid fa-up-long"></i></span>
+  </div>
+  
+  <!-- Bootstrap Js -->
+  <script src="/assets/js/bootstrap.min.js"></script>
+  <script src="/assets/js/jquery.nice-select.min.js"></script>
+  <script src="/assets/js/jquery.fancybox.min.js"></script>
+  <script src="/assets/js/custom.js"></script>
+</body>
+</html>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth');
 const homeController = require('../controllers/home');
+const activityController = require('../controllers/activityController');
 const path = require('path');
 const News = require('../models/News');
 
@@ -12,6 +13,9 @@ router.get('/', homeController.getHomePage);
 router.get('/news', homeController.getNewsPage);
 router.get('/news.html', homeController.getNewsPage);
 router.get('/news/:slug', homeController.getNewsDetail);
+
+// Faoliyatlar sahifasi
+router.get('/activities/:slug', activityController.getActivityDetail);
 
 // Authentication routes
 router.get('/login', authController.getLogin);

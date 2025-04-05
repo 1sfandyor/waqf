@@ -1,43 +1,98 @@
 <%- include('../../partials/admin/header') %>
 
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">Slayderni Tahrirlash</h4>
-        <a href="/admin/sliders" class="btn btn-secondary">Orqaga</a>
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30 container">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Slayderni Tahrirlash</h2>
       </div>
-      <div class="card-body">
-        <% if (typeof messages != 'undefined' && messages.error) { %>
-          <div class="alert alert-danger alert-dismissible fade show">
-            <%= messages.error %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% } %>
+    </div>
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/admin/sliders">Slayderlar</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Tahrirlash
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
 
-        <% if (typeof errors != 'undefined' && errors.length > 0) { %>
-          <div class="alert alert-danger alert-dismissible fade show">
-            <ul class="mb-0">
-              <% errors.forEach(function(error) { %>
-                <li><%= error.msg %></li>
-              <% }); %>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% } %>
+<div class="card-style mb-30 container">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h5 class="mb-0">Slayder ma'lumotlarini tahrirlash</h5>
+    <a href="/admin/sliders" class="main-btn light-btn btn-hover btn-sm">
+      <i class="lni lni-arrow-left me-2"></i> Orqaga
+    </a>
+  </div>
+  
+  <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+    <div class="alert-box success-alert">
+      <div class="alert">
+        <p class="text-medium"><%= success_msg %></p>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+          <i class="lni lni-close"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+    <div class="alert-box danger-alert">
+      <div class="alert">
+        <p class="text-medium"><%= error_msg %></p>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+          <i class="lni lni-close"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+  
+  <% if (typeof errors !== 'undefined' && errors.length > 0) { %>
+    <div class="alert-box danger-alert">
+      <div class="alert">
+        <ul class="mb-0">
+          <% errors.forEach(function(error) { %>
+            <li><%= error.msg %></li>
+          <% }); %>
+        </ul>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+          <i class="lni lni-close"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
 
-        <form method="POST" action="/admin/sliders/<%= slider._id %>/update" enctype="multipart/form-data">
-          <div class="row">
-            <div class="col-md-8">
-              <div class="mb-3">
-                <div class="form-check">
+  <div class="row">
+    <div class="col-12">
+      <form method="POST" action="/admin/sliders/<%= slider._id %>/update" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-8">
+            <div class="select-style-1 mb-3">
+              <label class="mb-2">Sarlavha turi</label>
+              <div class="select-position select-sm">
+                <div class="form-check radio-style mb-2">
                   <input class="form-check-input" type="radio" name="titleType" id="titleTypeText" value="text" 
                         <%= !slider.titleImage ? 'checked' : '' %> onclick="toggleTitleType()">
                   <label class="form-check-label" for="titleTypeText">
                     Matn sarlavha qo'shish
                   </label>
                 </div>
-                <div class="form-check">
+                <div class="form-check radio-style mb-2">
                   <input class="form-check-input" type="radio" name="titleType" id="titleTypeImage" value="image" 
                         <%= slider.titleImage ? 'checked' : '' %> onclick="toggleTitleType()">
                   <label class="form-check-label" for="titleTypeImage">
@@ -45,55 +100,54 @@
                   </label>
                 </div>
               </div>
+            </div>
 
-              <!-- Matn sarlavha -->
-              <div class="mb-3" id="titleTextBlock" style="<%= slider.titleImage ? 'display:none;' : '' %>">
-                <label for="title" class="form-label">Sarlavha (ixtiyoriy)</label>
-                <input type="text" class="form-control" id="title" name="title" 
-                       value="<%= slider.title %>">
+            <!-- Matn sarlavha -->
+            <div class="input-style-1 mb-3" id="titleTextBlock" style="<%= slider.titleImage ? 'display:none;' : '' %>">
+              <label>Sarlavha (ixtiyoriy)</label>
+              <input type="text" name="title" value="<%= slider.title %>">
+            </div>
+
+            <!-- Rasm sarlavha -->
+            <div class="input-style-1 mb-3" id="titleImageBlock" style="<%= !slider.titleImage ? 'display:none;' : '' %>">
+              <label>Sarlavha rasmi (ixtiyoriy)</label>
+              <input type="file" name="titleImage" accept="image/*" class="form-control">
+              <small class="text-muted">Tavsiya etilgan o'lcham: 400x152. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
+              <div class="mt-2">
+                <% if (slider.titleImage) { %>
+                  <img id="titleImagePreview" src="<%= slider.titleImage %>" alt="Joriy sarlavha rasmi" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
+                <% } else { %>
+                  <img id="titleImagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+                <% } %>
               </div>
+            </div>
 
-              <!-- Rasm sarlavha -->
-              <div class="mb-3" id="titleImageBlock" style="<%= !slider.titleImage ? 'display:none;' : '' %>">
-                <label for="titleImage" class="form-label">Sarlavha rasmi (ixtiyoriy)</label>
-                <input type="file" class="form-control" id="titleImage" name="titleImage" accept="image/*">
-                <small class="text-muted">Tavsiya etilgan o'lcham: 400x152. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
-                <div class="mt-2">
-                  <% if (slider.titleImage) { %>
-                    <img id="titleImagePreview" src="<%= slider.titleImage %>" alt="Joriy sarlavha rasmi" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
-                  <% } else { %>
-                    <img id="titleImagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
-                  <% } %>
-                </div>
-              </div>
+            <div class="input-style-1 mb-3">
+              <label>Tavsif (ixtiyoriy)</label>
+              <textarea name="description" rows="3"><%= slider.description %></textarea>
+            </div>
 
-              <div class="mb-3">
-                <label for="description" class="form-label">Tavsif (ixtiyoriy)</label>
-                <textarea class="form-control" id="description" name="description" rows="3"><%= slider.description %></textarea>
-              </div>
+            <div class="input-style-1 mb-3">
+              <label>Tugma matni (ixtiyoriy)</label>
+              <input type="text" name="buttonText" value="<%= slider.buttonText %>">
+            </div>
 
-              <div class="mb-3">
-                <label for="buttonText" class="form-label">Tugma matni (ixtiyoriy)</label>
-                <input type="text" class="form-control" id="buttonText" name="buttonText" 
-                       value="<%= slider.buttonText %>">
-              </div>
+            <div class="input-style-1 mb-3">
+              <label>Tugma havolasi (ixtiyoriy)</label>
+              <input type="text" name="buttonLink" value="<%= slider.buttonLink %>">
+            </div>
 
-              <div class="mb-3">
-                <label for="buttonLink" class="form-label">Tugma havolasi (ixtiyoriy)</label>
-                <input type="text" class="form-control" id="buttonLink" name="buttonLink" 
-                       value="<%= slider.buttonLink %>">
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Status</label>
-                <div class="form-check">
+            <div class="select-style-1 mb-3">
+              <label class="mb-2">Status</label>
+              <div class="select-position select-sm">
+                <div class="form-check radio-style mb-2">
                   <input class="form-check-input" type="radio" name="active" id="activeYes" value="true" 
                          <%= slider.active ? 'checked' : '' %>>
                   <label class="form-check-label" for="activeYes">
                     Aktiv
                   </label>
                 </div>
-                <div class="form-check">
+                <div class="form-check radio-style mb-2">
                   <input class="form-check-input" type="radio" name="active" id="activeNo" value="false" 
                          <%= !slider.active ? 'checked' : '' %>>
                   <label class="form-check-label" for="activeNo">
@@ -102,28 +156,30 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="image" class="form-label">Rasm</label>
-                <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                <small class="text-muted">Tavsiya etilgan o'lcham: 1920x780. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
-                <div class="mt-2">
-                  <% if (slider.image) { %>
-                    <img id="imagePreview" src="<%= slider.image %>" alt="Joriy rasm" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
-                  <% } else { %>
-                    <img id="imagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
-                  <% } %>
-                </div>
+          <div class="col-md-4">
+            <div class="input-style-1 mb-3">
+              <label>Rasm</label>
+              <input type="file" id="image" name="image" accept="image/*" class="form-control">
+              <small class="text-muted">Tavsiya etilgan o'lcham: 1920x780. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
+              <div class="mt-2">
+                <% if (slider.image) { %>
+                  <img id="imagePreview" src="<%= slider.image %>" alt="Joriy rasm" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
+                <% } else { %>
+                  <img id="imagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+                <% } %>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary">Saqlash</button>
-          </div>
-        </form>
-      </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="main-btn primary-btn btn-hover">
+            <i class="lni lni-save me-2"></i> Saqlash
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

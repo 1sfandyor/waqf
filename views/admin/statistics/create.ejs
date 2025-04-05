@@ -1,0 +1,127 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30 container">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Yangi statistika qo'shish</h2>
+      </div>
+    </div> 
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="/admin/statistics">Statistika</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Yangi qo'shish
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="row container mx-auto">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <h6 class="mb-25">Statistika ma'lumotlari</h6>
+      
+      <% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length > 0) { %>
+        <div class="alert-box success-alert">
+          <div class="alert">
+            <p class="text-medium"><%= success_msg %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length > 0) { %>
+        <div class="alert-box danger-alert">
+          <div class="alert">
+            <p class="text-medium"><%= error_msg %></p>
+          </div>
+        </div>
+      <% } %>
+      
+      <form action="/admin/statistics/create" method="POST">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style-1 mb-4">
+              <label for="title" class="required">Sarlavha</label>
+              <input type="text" name="title" id="title" placeholder="Statistika sarlavhasi" required
+                value="<%= typeof formData !== 'undefined' ? formData.title || '' : '' %>">
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label for="value" class="required">Qiymat</label>
+              <input type="text" name="value" id="value" placeholder="200+" required
+                value="<%= typeof formData !== 'undefined' ? formData.value || '' : '' %>">
+              <small class="form-text text-muted">Misol: "200+", "1.500.000+", "1800+" va h.k.</small>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="input-style-1 mb-4">
+              <label for="icon">Ikonka (Ixtiyoriy)</label>
+              <input type="text" name="icon" id="icon" placeholder="assets/images/fun-facts-1.png"
+                value="<%= typeof formData !== 'undefined' ? formData.icon || '' : '' %>">
+              <small class="form-text text-muted">Ikonka uchun fayl yo'li yoki CSS klassi</small>
+            </div>
+            
+            <div class="input-style-1 mb-4">
+              <label for="description">Tavsif (Ixtiyoriy)</label>
+              <input type="text" name="description" id="description" placeholder="Qo'shimcha ma'lumot"
+                value="<%= typeof formData !== 'undefined' ? formData.description || '' : '' %>">
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-style-1 mb-4">
+              <label for="order">Tartib</label>
+              <input type="number" name="order" id="order" placeholder="0" min="0"
+                value="<%= typeof formData !== 'undefined' ? formData.order || '0' : '0' %>">
+              <small class="form-text text-muted">Statistikalar tartibini belgilash uchun (Kichik raqam = Yuqoriroq joylashuv)</small>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="form-elements-wrapper mb-4">
+              <div class="checkbox-style-1">
+                <label>Holati</label>
+                <div>
+                  <label class="radio-style-1 mb-2">
+                    <input type="radio" name="status" value="published" checked>
+                    <span>Chop etilgan</span>
+                  </label>
+                  <label class="radio-style-1">
+                    <input type="radio" name="status" value="draft" <%= typeof formData !== 'undefined' && formData.status === 'draft' ? 'checked' : '' %>>
+                    <span>Qoralama</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="button-group mt-4">
+          <button type="submit" class="main-btn primary-btn btn-hover">Saqlash</button>
+          <a href="/admin/statistics" class="main-btn light-btn btn-hover ml-2">Bekor qilish</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %> 

@@ -9,7 +9,7 @@ Bu Node.js loyihasi, Ezan Vakfı veb-sayti uchun admin panel yaratadi. Tizim orq
 - **Authentication**: Passport.js
 - **Template Engine**: EJS
 - **File Uploads**: Multer
-- **UI Framework**: AdminLTE 3, Bootstrap 4
+- **UI Framework**: Bootstrap 4
 
 ## O'rnatish
 

@@ -1,0 +1,277 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper container">
+  <!-- Content Header (Page header) -->
+  <div class="content-header ">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Faoliyatlar boshqaruvi</h1>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Messages -->
+      <% if (success_msg && success_msg.length > 0) { %>
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <%= success_msg %>
+        </div>
+      <% } %>
+      
+      <% if (error_msg && error_msg.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <%= error_msg %>
+        </div>
+      <% } %>
+
+      <div class="row mb-3">
+        <div class="col-12">
+          <a href="/admin/activities/create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Yangi faoliyat qo'shish
+          </a>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Barcha faoliyatlar</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table class="table table-bordered table-striped" id="activitiesTable">
+                <thead>
+                  <tr>
+                    <th style="width: 40px;">#</th>
+                    <th>Nomi</th>
+                    <th>Rasm</th>
+                    <th>Ikonka</th>
+                    <th>URL</th>
+                    <th>Status</th>
+                    <th>Tartib</th>
+                    <th style="width: 120px;">Harakatlar</th>
+                  </tr>
+                </thead>
+                <tbody id="activitiesList">
+                  <% if (activities && activities.length > 0) { %>
+                    <% activities.forEach((activity, index) => { %>
+                      <tr data-id="<%= activity._id %>">
+                        <td>
+                          <i class="fas fa-arrows-alt handle-drag text-muted cursor-move"></i>
+                          <%= index + 1 %>
+                        </td>
+                        <td>
+                          <div class="activity-name">
+                            <h6 class="text-truncate mb-0" style="max-width: 200px;">
+                              <%= activity.title %>
+                            </h6>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="activity-image">
+                            <img src="<%= activity.image %>" alt="<%= activity.title %>" width="60" style="max-height: 40px; object-fit: cover;">
+                          </div>
+                        </td>
+                        <td>
+                          <div class="activity-icon">
+                            <img src="<%= activity.icon %>" alt="<%= activity.title %> icon" width="30" style="max-height: 30px;">
+                          </div>
+                        </td>
+                        <td>
+                          <div class="activity-url">
+                            <span class="text-truncate d-inline-block" style="max-width: 150px;">
+                              <%= activity.url %>
+                            </span>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="custom-control custom-switch">
+                            <input 
+                              type="checkbox" 
+                              class="custom-control-input toggle-status" 
+                              id="statusSwitch-<%= activity._id %>" 
+                              data-id="<%= activity._id %>"
+                              <%= activity.status === 'published' ? 'checked' : '' %>
+                            >
+                            <label class="custom-control-label" for="statusSwitch-<%= activity._id %>">
+                              <span class="status-text <%= activity.status === 'published' ? 'text-success' : 'text-secondary' %>">
+                                <%= activity.status === 'published' ? 'Chop etilgan' : 'Qoralama' %>
+                              </span>
+                            </label>
+                          </div>
+                        </td>
+                        <td>
+                          <span class="order-num"><%= activity.order %></span>
+                        </td>
+                        <td>
+                          <div class="btn-group">
+                            <a href="/admin/activities/<%= activity._id %>/edit" class="btn btn-sm btn-info">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-danger delete-activity" data-id="<%= activity._id %>" data-toggle="modal" data-target="#deleteActivityModal">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="8" class="text-center">Hozircha faoliyatlar yo'q</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteActivityModal" tabindex="-1" role="dialog" aria-labelledby="deleteActivityModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteActivityModalLabel">Faoliyatni o'chirish</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Siz rostdan ham bu faoliyatni o'chirmoqchimisiz?
+        <p class="text-danger mt-2">Diqqat: Bu amalni qaytarib bo'lmaydi!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Bekor qilish</button>
+        <form id="deleteActivityForm" action="" method="POST">
+          <button type="submit" class="btn btn-danger">O'chirish</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Delete modal
+    const deleteButtons = document.querySelectorAll('.delete-activity');
+    const deleteForm = document.getElementById('deleteActivityForm');
+    
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const activityId = this.getAttribute('data-id');
+        deleteForm.action = `/admin/activities/${activityId}/delete`;
+      });
+    });
+
+    // Toggle status
+    const toggleStatusSwitches = document.querySelectorAll('.toggle-status');
+    
+    toggleStatusSwitches.forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        const activityId = this.getAttribute('data-id');
+        const statusLabel = this.parentElement.querySelector('.status-text');
+        
+        fetch(`/admin/activities/${activityId}/toggle-status`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            active: this.checked
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            if (data.newStatus === 'published') {
+              statusLabel.textContent = 'Chop etilgan';
+              statusLabel.classList.remove('text-secondary');
+              statusLabel.classList.add('text-success');
+            } else {
+              statusLabel.textContent = 'Qoralama';
+              statusLabel.classList.remove('text-success');
+              statusLabel.classList.add('text-secondary');
+            }
+          } else {
+            // Xatolik bo'lsa, switchni avvalgi holatiga qaytarish
+            this.checked = !this.checked;
+            alert('Status o\'zgartirishda xatolik yuz berdi');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.checked = !this.checked;
+          alert('Status o\'zgartirishda xatolik yuz berdi');
+        });
+      });
+    });
+
+    // Drag and Drop ordering
+    const activitiesList = document.getElementById('activitiesList');
+    
+    if (activitiesList && activitiesList.children.length > 1) {
+      new Sortable(activitiesList, {
+        handle: '.handle-drag',
+        animation: 150,
+        onEnd: function() {
+          // Yangi tartib raqamlarini belgilash
+          const rows = activitiesList.querySelectorAll('tr');
+          const activities = [];
+          
+          rows.forEach((row, index) => {
+            const id = row.getAttribute('data-id');
+            const orderNumEl = row.querySelector('.order-num');
+            
+            orderNumEl.textContent = index + 1;
+            activities.push({
+              id: id,
+              order: index + 1
+            });
+          });
+          
+          // Yangi tartibni serverga yuborish
+          updateOrder(activities);
+        }
+      });
+    }
+    
+    function updateOrder(activities) {
+      fetch('/admin/activities/change-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ activities })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.success) {
+          alert('Tartib o\'zgartirishda xatolik yuz berdi');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Tartib o\'zgartirishda xatolik yuz berdi');
+      });
+    }
+  });
+</script> 

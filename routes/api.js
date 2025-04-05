@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const newsController = require('../controllers/news');
+const newsController = require('../controllers/newsController');
 const galleryController = require('../controllers/galleryController');
+const sliderController = require('../controllers/sliderController');
+const activityController = require('../controllers/activityController');
+const statisticController = require('../controllers/statisticController');
 const News = require('../models/News');
 const Gallery = require('../models/Gallery');
 const Project = require('../models/Project');
@@ -9,7 +12,7 @@ const { isAuthenticatedApi, isAdminApi } = require('../middleware/auth');
 
 // Public API endpoints
 router.get('/news', newsController.getNewsApi);
-router.get('/news/:id', newsController.getNewsDetailApi);
+router.get('/news/:slug', newsController.getNewsDetailApi);
 router.get('/galleries', galleryController.getGalleriesApi);
 router.get('/galleries/:id', galleryController.getGalleryDetailApi);
 
@@ -135,5 +138,12 @@ router.get('/search', async (req, res) => {
 // Protected API endpoints - require authentication
 // Example of a protected endpoint:
 // router.post('/news', isAuthenticatedApi, isAdminApi, newsController.createNewsApi);
+
+// API endpointlari
+router.get('/sliders', sliderController.getPublishedSliders);
+
+// Faoliyatlar API endpointlari
+router.get('/activities', activityController.getActivitiesApi);
+router.get('/activities/:slug', activityController.getActivityDetailApi);
 
 module.exports = router; 

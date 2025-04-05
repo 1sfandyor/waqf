@@ -19,7 +19,6 @@
   "author": "Ezan Vakfi",
   "license": "MIT",
   "dependencies": {
-    "admin-lte": "^4.0.0-beta3",
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",

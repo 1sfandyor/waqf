@@ -1,5 +1,6 @@
 const News = require('../models/News');
 const Slider = require('../models/Slider');
+const Activity = require('../models/Activity');
 
 // Bosh sahifa
 exports.getHomePage = async (req, res) => {
@@ -19,11 +20,15 @@ exports.getHomePage = async (req, res) => {
       status: 'published'
     }).sort({ createdAt: -1 }).limit(12);
     
+    // Faoliyatlarni yuklash
+    const activities = await Activity.find({ status: 'published' }).sort({ order: 1 });
+    
     res.render('index', {
       title: 'Ezan Vakfı - Orta Asya halklarının infak eli',
       sliders,
       duyurular,
-      latestNews
+      latestNews,
+      activities
     });
     
   } catch (err) {

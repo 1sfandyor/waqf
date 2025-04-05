@@ -1,0 +1,327 @@
+<%- include('../../partials/admin/header') %>
+
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper container">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Yangi faoliyat qo'shish</h1>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Messages -->
+      <% if (success_msg && success_msg.length > 0) { %>
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <%= success_msg %>
+        </div>
+      <% } %>
+      
+      <% if (error_msg && error_msg.length > 0) { %>
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+          <%= error_msg %>
+        </div>
+      <% } %>
+
+      <!-- Form Card -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <form action="/admin/activities/create" method="POST" enctype="multipart/form-data">
+              <div class="card-body">
+                <!-- Asosiy ma'lumotlar -->
+                <div class="card card-primary card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">Asosiy ma'lumotlar</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="title">Faoliyat nomi</label>
+                          <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="url">URL</label>
+                          <input type="text" class="form-control" id="url" name="url" required placeholder="Misol: /academy.html">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label for="description">To'liq tavsif</label>
+                          <textarea id="description" name="description" rows="5" required></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="image">Asosiy rasm</label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="image" name="image" accept="image/*" required>
+                              <label class="custom-file-label" for="image">Rasm tanlang</label>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <img id="imagePreview" src="#" alt="Tanlangan rasm" style="max-width: 100%; max-height: 200px; display: none;">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="icon">Ikonka</label>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" id="icon" name="icon" accept="image/*" required>
+                              <label class="custom-file-label" for="icon">Ikonka tanlang</label>
+                            </div>
+                          </div>
+                          <div class="mt-2">
+                            <img id="iconPreview" src="#" alt="Tanlangan ikonka" style="max-width: 100%; max-height: 100px; display: none;">
+                          </div>
+                          <small class="text-muted">Ikonka sifatida kichik o'lchamdagi PNG rasmi tavsiya etiladi</small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="status">Status</label>
+                          <select class="form-control" id="status" name="status" required>
+                            <option value="draft">Qoralama</option>
+                            <option value="published">Chop etilgan</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Darslar ro'yxati -->
+                <div class="card card-success card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">Darslar ro'yxati</h3>
+                    <div class="card-tools">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="showLessons" name="showLessons">
+                        <label class="custom-control-label" for="showLessons">Darslar ro'yxatini ko'rsatish</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group" id="lessonsContainer">
+                      <div class="mb-2">
+                        <button type="button" class="btn btn-sm btn-info" id="addLesson">Dars qo'shish</button>
+                      </div>
+                      <div class="lesson-items">
+                        <div class="input-group mb-2">
+                          <input type="text" class="form-control" name="lessons" placeholder="Dars nomi">
+                          <div class="input-group-append">
+                            <button class="btn btn-danger remove-lesson" type="button">
+                              <i class="fas fa-times"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Galeriya -->
+                <div class="card card-info card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">Galeriya</h3>
+                    <div class="card-tools">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="showGallery" name="showGallery">
+                        <label class="custom-control-label" for="showGallery">Galeriyani ko'rsatish</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="gallery">Rasmlarni yuklash</label>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="gallery" name="gallery" accept="image/*" multiple>
+                          <label class="custom-file-label" for="gallery">Galeriya uchun rasmlarni tanlang</label>
+                        </div>
+                      </div>
+                      <small class="text-muted">Bir nechta rasm tanlash uchun CTRL tugmasini bosib turib tanlang</small>
+                      <div class="row mt-3" id="galleryPreview"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Iqtibos -->
+                <div class="card card-warning card-outline">
+                  <div class="card-header">
+                    <h3 class="card-title">Iqtibos</h3>
+                    <div class="card-tools">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="showQuote" name="showQuote">
+                        <label class="custom-control-label" for="showQuote">Iqtibosni ko'rsatish</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label for="quote">Iqtibos matni</label>
+                      <textarea class="form-control" id="quote" name="quote" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="quoteAuthor">Iqtibos muallifi</label>
+                      <input type="text" class="form-control" id="quoteAuthor" name="quoteAuthor" placeholder="Misol: Ibn Taymiyya">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-4">
+                  <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                    <a href="/admin/activities" class="btn btn-default">Bekor qilish</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('../../partials/admin/footer') %>
+
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/eru0dp5689b9p0hdmv7t60mo38e6xvb82ejq4pkv9ocvfu2s/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+  $(document).ready(function() {
+    // Custom file input
+    bsCustomFileInput.init();
+    
+    // Rasm preview
+    $('#image').change(function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          $('#imagePreview').attr('src', e.target.result);
+          $('#imagePreview').css('display', 'block');
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        $('#imagePreview').css('display', 'none');
+      }
+    });
+    
+    // Ikonka preview
+    $('#icon').change(function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          $('#iconPreview').attr('src', e.target.result);
+          $('#iconPreview').css('display', 'block');
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        $('#iconPreview').css('display', 'none');
+      }
+    });
+    
+    // Galeriya rasmlari preview
+    $('#gallery').change(function() {
+      const files = this.files;
+      $('#galleryPreview').html('');
+      
+      if (files) {
+        for (let i = 0; i < files.length; i++) {
+          const reader = new FileReader();
+          
+          reader.onload = function(e) {
+            $('#galleryPreview').append(`
+              <div class="col-md-3 mb-2">
+                <img src="${e.target.result}" class="img-thumbnail" style="height: 150px; object-fit: cover;">
+              </div>
+            `);
+          }
+          
+          reader.readAsDataURL(files[i]);
+        }
+      }
+    });
+    
+    // Dars qo'shish
+    $('#addLesson').click(function() {
+      $('.lesson-items').append(`
+        <div class="input-group mb-2">
+          <input type="text" class="form-control" name="lessons" placeholder="Dars nomi">
+          <div class="input-group-append">
+            <button class="btn btn-danger remove-lesson" type="button">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      `);
+    });
+    
+    // Darsni o'chirish
+    $(document).on('click', '.remove-lesson', function() {
+      $(this).closest('.input-group').remove();
+    });
+  });
+</script>
+
+<!-- TinyMCE skriptini to'g'ri joylash -->
+<script>
+  // TinyMCE initsializatsiyasi - sahifa yuklangandan keyin
+  document.addEventListener('DOMContentLoaded', function() {
+    tinymce.init({
+      selector: '#description', 
+      height: 500,
+      setup: function(editor) {
+        editor.on('init', function() {
+          console.log('TinyMCE editor initialized');
+          // Element ko'rinarli bo'lishi uchun
+          $(editor.getContainer()).css('display', 'block');
+        });
+      },
+      promotion: false,
+      plugins: [
+        'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+        'advlist directionality fullscreen hr insertdatetime nonbreaking pagebreak paste print save template'
+      ],
+      toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | image media link | fullscreen',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+      images_upload_url: '/admin/upload-image',
+      automatic_uploads: true,
+      file_picker_types: 'image',
+      language: 'tr',
+    });
+  });
+</script> 

@@ -1,80 +1,134 @@
 <%- include('../../partials/admin/header') %>
 
-<div class="row h-100">
-  <div class="col-12">
-    <div class="card py-lg-5 h-100">
-      <div class="card-header container">
-        <h4 class="card-title">Slayderlar Ro'yxati</h4>
-        <a href="/admin/sliders/create" class="btn btn-primary">Yangi Slayder Qo'shish</a>
-      </div>
-      <div class="card-body container px-0">
-        <% if (typeof messages != 'undefined' && messages.success) { %>
-          <div class="alert alert-success alert-dismissible fade show">
-            <%= messages.success %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% } %>
-        <% if (typeof messages != 'undefined' && messages.error) { %>
-          <div class="alert alert-danger alert-dismissible fade show">
-            <%= messages.error %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        <% } %>
-        
-        <div class="table-responsive">
-          <table id="slidersTable" class="table table-bordered table-striped table-hover">
-            <thead>
-              <tr>
-                <th class="px-3">Rasm</th>
-                <th class="px-3">Sarlavha</th>
-                <th class="px-3">Tugma matni</th>
-                <th class="px-3">Havola</th>
-                <th class="px-3">Status</th>
-                <th class="px-3">Harakatlar</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% if (sliders && sliders.length > 0) { %>
-                <% sliders.forEach(function(slider) { %>
-                  <tr data-id="<%= slider._id %>">
-                    <td  class="px-3">
-                      <img src="<%= slider.image %>" alt="<%= slider.title %>" width="100" height="60" style="object-fit: cover;">
-                    </td>
-                    <td class="px-3"><%= slider.title %></td>
-                    <td class="px-3"><%= slider.buttonText %></td>
-                    <td class="px-3"><%= slider.buttonLink %></td>
-                    <td class="px-3">
-                      <div class="form-check form-switch">
-                        <input class="form-check-input status-toggle" type="checkbox" 
-                               data-id="<%= slider._id %>" 
-                               <%= slider.active ? 'checked' : '' %>>
-                        <label class="form-check-label">
-                          <%= slider.active ? 'Aktiv' : 'Faol emas' %>
-                        </label>
-                      </div>
-                    </td>
-                    <td class="px-3">
-                      <a href="/admin/sliders/<%= slider._id %>/edit" class="btn btn-sm btn-outline-info"
-                        style="--bs-btn-font-size: .76rem;">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <button type="button" class="btn btn-sm btn-outline-danger delete-btn" data-id="<%= slider._id %>"
-                        style="--bs-btn-font-size: .76rem;">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
-                  </tr>
-                <% }); %>
-              <% } else { %>
-                <tr>
-                  <td colspan="7" class="text-center">Hech qanday slayder topilmadi</td>
-                </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30 container">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Slayderlar boshqaruvi</h2>
       </div>
     </div>
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Slayderlar
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="card-style mb-30 container">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h5 class="mb-0">Barcha slayderlar</h5>
+    <a href="/admin/sliders/create" class="main-btn primary-btn btn-hover btn-sm">
+      <i class="lni lni-plus me-2"></i> Yangi qo'shish
+    </a>
+  </div>
+  
+  <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+    <div class="alert-box success-alert">
+      <div class="alert">
+        <p class="text-medium"><%= success_msg %></p>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+          <i class="lni lni-close"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+  <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+    <div class="alert-box danger-alert">
+      <div class="alert">
+        <p class="text-medium"><%= error_msg %></p>
+        <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+          <i class="lni lni-close"></i>
+        </button>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="table-responsive">
+    <table class="table top-selling-table">
+      <thead>
+        <tr>
+          <th>
+            <h6 class="text-sm text-medium">Rasm</h6>
+          </th>
+          <th>
+            <h6 class="text-sm text-medium">Sarlavha</h6>
+          </th>
+          <th>
+            <h6 class="text-sm text-medium">Tugma matni</h6>
+          </th>
+          <th>
+            <h6 class="text-sm text-medium">Havola</h6>
+          </th>
+          <th>
+            <h6 class="text-sm text-medium">Status</h6>
+          </th>
+          <th>
+            <h6 class="text-sm text-medium">Amallar</h6>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (sliders && sliders.length > 0) { %>
+          <% sliders.forEach(function(slider) { %>
+            <tr>
+              <td>
+                <div class="product">
+                  <div class="image">
+                    <img src="<%= slider.image %>" alt="<%= slider.title %>" style="width: 50px; height: 50px; object-fit: cover;">
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="text-sm"><%= slider.title %></p>
+              </td>
+              <td>
+                <span class="status-btn primary-btn"><%= slider.buttonText %></span>
+              </td>
+              <td>
+                <p class="text-sm"><%= slider.buttonLink %></p>
+              </td>
+              <td>
+                <div class="form-check form-switch p-0">
+                  <label class="switch">
+                    <input class="status-toggle" type="checkbox" <%= slider.active ? 'checked' : '' %> data-id="<%= slider._id %>">
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </td>
+              <td>
+                <div class="action">
+                  <a href="/admin/sliders/<%= slider._id %>/edit" class="text-primary mx-1">
+                    <i class="lni lni-pencil"></i>
+                  </a>
+                  <button type="button" class="text-danger mx-1 bg-transparent border-0 delete-btn" data-id="<%= slider._id %>">
+                    <i class="lni lni-trash-can"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center">Hech qanday slayder topilmadi</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -101,6 +155,65 @@
 
 <%- include('../../partials/admin/footer') %>
 
+<style>
+  /* Toggle Switch Style */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 15px;
+    width: 15px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #4CAF50;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #4CAF50;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+</style>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Slayderlarni o'chirish tugmasi
@@ -115,6 +228,78 @@
         
         deleteForm.setAttribute('action', `/admin/sliders/${sliderId}/delete`);
         deleteModal.show();
+      });
+    });
+    
+    // Slayder statusini o'zgartirish
+    const statusToggles = document.querySelectorAll('.status-toggle');
+    
+    statusToggles.forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        const sliderId = this.getAttribute('data-id');
+        const isActive = this.checked;
+        
+        // Serverga so'rov yuborish
+        fetch(`/admin/sliders/${sliderId}/toggle-status`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ active: isActive }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Muvaffaqiyatli bo'lsa
+            const alertBox = document.createElement('div');
+            alertBox.className = 'alert-box success-alert';
+            alertBox.innerHTML = `
+              <div class="alert d-flex align-items-center justify-content-between w-100">
+                <p class="text-medium">Slayder statusi muvaffaqiyatli o'zgartirildi</p>
+                <button class="close-btn btn btn-sm" type="button" onclick="this.parentElement.parentElement.remove()">
+                  <i class="lni lni-close"></i>
+                </button>
+              </div>
+            `;
+            document.querySelector('.card-style').insertBefore(alertBox, document.querySelector('.table-responsive'));
+          } else {
+            // Xatolik bo'lsa
+            const alertBox = document.createElement('div');
+            alertBox.className = 'alert-box danger-alert';
+            alertBox.innerHTML = `
+              <div class="alert">
+                <p class="text-medium">${data.message || 'Slayder statusini o\'zgartirishda xatolik'}</p>
+                <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+                  <i class="lni lni-close"></i>
+                </button>
+              </div>
+            `;
+            document.querySelector('.card-style').insertBefore(alertBox, document.querySelector('.table-responsive'));
+            
+            // Statusni qaytarish
+            if (!data.success) {
+              this.checked = !isActive;
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Xatolik:', error);
+          // Xatolik chiqsa
+          const alertBox = document.createElement('div');
+          alertBox.className = 'alert-box danger-alert';
+          alertBox.innerHTML = `
+            <div class="alert">
+              <p class="text-medium">Slayder statusini o'zgartirishda xatolik yuz berdi</p>
+              <button class="close-btn" onclick="this.parentElement.parentElement.remove()">
+                <i class="lni lni-close"></i>
+              </button>
+            </div>
+          `;
+          document.querySelector('.card-style').insertBefore(alertBox, document.querySelector('.table-responsive'));
+          
+          // Statusni qaytarish
+          this.checked = !isActive;
+        });
       });
     });
   });

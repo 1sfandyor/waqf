@@ -6,15 +6,19 @@ const adminController = require('../controllers/admin');
 const newsController = require('../controllers/news');
 const galleryController = require('../controllers/galleryController');
 const sliderController = require('../controllers/sliderController');
+const activityController = require('../controllers/activityController');
 const authController = require('../controllers/auth');
+const statisticController = require('../controllers/statisticController');
 const { isAdmin, isAuthenticated, isEditor } = require('../middleware/auth');
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Slider rasmlar uchun maxsus jild
+    // Slider va activity rasmlari uchun maxsus jildlar
     if (req.originalUrl.includes('/sliders')) {
       cb(null, path.join(__dirname, '../public/uploads/sliders/'));
+    } else if (req.originalUrl.includes('/activities')) {
+      cb(null, path.join(__dirname, '../public/uploads/activities/'));
     } else {
       cb(null, path.join(__dirname, '../public/uploads/'));
     }
@@ -89,6 +93,30 @@ router.post('/gallery/create', isEditor, upload.array('images', 20), galleryCont
 router.get('/gallery/:id/edit', isEditor, galleryController.editGalleryForm);
 router.post('/gallery/:id/edit', isEditor, upload.array('images', 20), galleryController.updateGallery);
 router.post('/gallery/:id/delete', isEditor, galleryController.deleteGallery);
+
+// Faoliyatlar management (Editor or Admin)
+router.get('/activities', isEditor, activityController.getAllActivities);
+router.get('/activities/create', isEditor, activityController.createActivityForm);
+router.post('/activities/create', isEditor, upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'icon', maxCount: 1 }
+]), activityController.createActivity);
+router.get('/activities/:id/edit', isEditor, activityController.editActivityForm);
+router.post('/activities/:id/edit', isEditor, upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'icon', maxCount: 1 }
+]), activityController.updateActivity);
+router.post('/activities/:id/delete', isEditor, activityController.deleteActivity);
+router.post('/activities/:id/toggle-status', isEditor, activityController.toggleStatus);
+router.post('/activities/change-order', isEditor, activityController.changeOrder);
+
+// Statistics routes
+router.get('/statistics', isAdmin, statisticController.getAllStatistics);
+router.get('/statistics/create', isAdmin, statisticController.createStatisticForm);
+router.post('/statistics/create', isAdmin, statisticController.createStatistic);
+router.get('/statistics/:id/edit', isAdmin, statisticController.editStatisticForm);
+router.post('/statistics/:id/edit', isAdmin, statisticController.updateStatistic);
+router.get('/statistics/:id/delete', isAdmin, statisticController.deleteStatistic);
 
 // TinyMCE image upload route
 router.post('/upload-image', upload.single('file'), adminController.uploadImage);

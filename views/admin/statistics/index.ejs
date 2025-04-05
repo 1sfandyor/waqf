@@ -1,0 +1,186 @@
+<%- include('../../partials/admin/header') %>
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30 container">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title">
+        <h2>Statistika boshqaruvi</h2>
+      </div>
+    </div> 
+    <!-- end col -->
+    <div class="col-md-6">
+      <div class="breadcrumb-wrapper">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="/admin">Admin</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Statistika
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <!-- end col -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- ========== title-wrapper end ========== -->
+
+<div class="row container mx-auto">
+  <div class="col-lg-12">
+    <div class="card-style mb-30">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">Barcha statistikalar</h5>
+        <a href="/admin/statistics/create" class="main-btn primary-btn btn-hover btn-sm">
+          <i class="lni lni-plus mr-5"></i> Yangi qo'shish
+        </a>
+      </div>
+
+      <% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length > 0) { %>
+      <div class="alert-box success-alert">
+        <div class="alert">
+          <p class="text-medium">
+            <i class="lni lni-checkmark-circle"></i> <%= success_msg %>
+          </p>
+        </div>
+      </div>
+      <% } %>
+
+      <% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length > 0) { %>
+      <div class="alert-box danger-alert">
+        <div class="alert">
+          <p class="text-medium">
+            <i class="lni lni-warning"></i> <%= error_msg %>
+          </p>
+        </div>
+      </div>
+      <% } %>
+
+      <div class="table-wrapper table-responsive">
+        <table class="table striped-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Sarlavha</th>
+              <th>Qiymat</th>
+              <th>Tartib</th>
+              <th>Holat</th>
+              <th>Amallar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if(statistics && statistics.length > 0) { %>
+              <% statistics.forEach((statistic, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td><%= statistic.title %></td>
+                  <td><%= statistic.value %></td>
+                  <td><%= statistic.order %></td>
+                  <td>
+                    <div class="form-check form-switch toggle-switch">
+                      <input class="form-check-input status-toggle" type="checkbox" 
+                             id="status-<%= statistic._id %>" 
+                             data-id="<%= statistic._id %>" 
+                             <%= statistic.status === 'published' ? 'checked' : '' %>>
+                      <label class="form-check-label" for="status-<%= statistic._id %>">
+                        <span class="status-text"><%= statistic.status === 'published' ? 'Faol' : 'Qoralama' %></span>
+                      </label>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="action">
+                      <a href="/admin/statistics/<%= statistic._id %>/edit" class="text-info">
+                        <i class="lni lni-pencil"></i>
+                      </a>
+                      <a href="/admin/statistics/<%= statistic._id %>/delete" class="text-danger ms-2 btn-delete" 
+                         onclick="return confirm('Rostdan ham bu statistikani o\'chirmoqchimisiz?')">
+                        <i class="lni lni-trash-can"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="6" class="text-center">Statistika ma'lumotlari yo'q</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .toggle-switch .form-check-input {
+    width: 45px;
+    height: 22px;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: .4s;
+    cursor: pointer;
+  }
+  
+  .toggle-switch .form-check-input:checked {
+    background-color: #007d3a;
+  }
+  
+  .toggle-switch .form-check-input:focus {
+    box-shadow: none;
+  }
+  
+  .toggle-switch .form-check-label {
+    cursor: pointer;
+    padding-left: 10px;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const statusToggles = document.querySelectorAll('.status-toggle');
+    
+    statusToggles.forEach(toggle => {
+      toggle.addEventListener('change', function() {
+        const statisticId = this.dataset.id;
+        const status = this.checked ? 'published' : 'draft';
+        const statusText = this.parentElement.querySelector('.status-text');
+        
+        // Status o'zgarganda API ga so'rov yuborish
+        fetch(`/admin/statistics/${statisticId}/toggle-status`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({ status })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            statusText.textContent = status === 'published' ? 'Faol' : 'Qoralama';
+          } else {
+            // Xatolik bo'lsa, toggle ni oldingi holatiga qaytarish
+            this.checked = !this.checked;
+            alert('Status o\'zgartirishda xatolik yuz berdi');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.checked = !this.checked;
+          alert('Status o\'zgartirishda xatolik yuz berdi');
+        });
+      });
+    });
+  });
+</script>
+
+<%- include('../../partials/admin/footer') %> 

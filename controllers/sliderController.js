@@ -12,7 +12,8 @@ exports.getSliders = async (req, res) => {
       sliders,
       user: req.user,
       path: '/admin/sliders',
-      messages: req.flash()
+      success_msg: req.flash('success'),
+      error_msg: req.flash('error')
     });
   } catch (error) {
     console.error('Slayder olishda xatolik:', error);
@@ -28,7 +29,8 @@ exports.getCreateSlider = (req, res) => {
     slider: {},
     user: req.user,
     path: '/admin/sliders/create',
-    messages: req.flash()
+    success_msg: req.flash('success'),
+    error_msg: req.flash('error')
   });
 };
 
@@ -141,7 +143,8 @@ exports.getEditSlider = async (req, res) => {
       slider,
       user: req.user,
       path: `/admin/sliders/${req.params.id}/edit`,
-      messages: req.flash()
+      success_msg: req.flash('success'),
+      error_msg: req.flash('error')
     });
   } catch (error) {
     console.error('Slayderni tahrirlashda xatolik:', error);
@@ -348,25 +351,39 @@ exports.deleteSlider = async (req, res) => {
 // Slayder holatini o'zgartirish
 exports.toggleStatus = async (req, res) => {
   try {
-    const slider = await Slider.findById(req.params.id);
+    const sliderId = req.params.id;
+    const { status } = req.body;
+    
+    // Slayderni topish
+    const slider = await Slider.findById(sliderId);
     if (!slider) {
       return res.status(404).json({ success: false, message: 'Slayder topilmadi' });
     }
-
-    // Agar slayder o'chirilgan bo'lsa va endi yoqilmoqchi bo'lsa, aktiv slayderlar sonini tekshirish
-    if (!slider.active) {
-      const activeCount = await Slider.countDocuments({ active: true });
-      if (activeCount >= 5) {
-        return res.status(400).json({ success: false, message: 'Eng ko\'pi bilan 5 ta aktiv slayder bo\'lishi mumkin' });
-      }
-    }
-
-    slider.active = !slider.active;
+    
+    // Status o'zgartirish
+    slider.status = status;
     await slider.save();
-
-    res.json({ success: true, active: slider.active });
+    
+    res.status(200).json({ success: true, message: 'Slayder statusi muvaffaqiyatli o\'zgartirildi' });
   } catch (error) {
-    console.error('Slayder holatini o\'zgartirishda xatolik:', error);
-    res.status(500).json({ success: false, message: 'Slayder holatini o\'zgartirishda xatolik yuz berdi' });
+    console.error('Slayder statusini o\'zgartirishda xatolik:', error);
+    res.status(500).json({ success: false, message: 'Slayder statusini o\'zgartirishda xatolik yuz berdi' });
   }
-}; 
+};
+
+// Publish qilingan slayderlarni olish (API)
+exports.getPublishedSliders = async (req, res) => {
+  try {
+    const sliders = await Slider.find({ 
+      status: 'published',
+      active: true 
+    }).sort({ order: 1 });
+    
+    res.status(200).json(sliders);
+  } catch (error) {
+    console.error('Publish qilingan slayderlarni olishda xatolik:', error);
+    res.status(500).json({ error: 'Slayderlarni olishda xatolik yuz berdi' });
+  }
+};
+
+module.exports = exports; 

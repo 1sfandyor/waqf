@@ -29,6 +29,11 @@ const SliderSchema = new Schema({
     type: Boolean,
     default: true
   },
+  status: {
+    type: String,
+    enum: ['draft', 'published'],
+    default: 'published'
+  },
   order: {
     type: Number,
     default: 0
