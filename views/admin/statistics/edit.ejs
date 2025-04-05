@@ -5,7 +5,7 @@
   <div class="row align-items-center">
     <div class="col-md-6">
       <div class="title">
-        <h2>Yangi statistika qo'shish</h2>
+        <h2>Statistikani tahrirlash</h2>
       </div>
     </div> 
     <!-- end col -->
@@ -20,7 +20,7 @@
               <a href="/admin/statistics">Statistika</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-              Yangi qo'shish
+              Tahrirlash
             </li>
           </ol>
         </nav>
@@ -53,19 +53,19 @@
         </div>
       <% } %>
       
-      <form action="/admin/statistics/create" method="POST" enctype="multipart/form-data">
+      <form action="/admin/statistics/<%= statistic._id %>/edit" method="POST" enctype="multipart/form-data">
         <div class="row">
           <div class="col-md-6">
             <div class="input-style-1 mb-4">
               <label for="title" class="required">Sarlavha</label>
               <input type="text" name="title" id="title" placeholder="Statistika sarlavhasi" required
-                value="<%= typeof formData !== 'undefined' ? formData.title || '' : '' %>">
+                value="<%= statistic.title %>">
             </div>
             
             <div class="input-style-1 mb-4">
               <label for="value" class="required">Qiymat</label>
               <input type="text" name="value" id="value" placeholder="200+" required
-                value="<%= typeof formData !== 'undefined' ? formData.value || '' : '' %>">
+                value="<%= statistic.value %>">
               <small class="form-text text-muted">Misol: "200+", "1.500.000+", "1800+" va h.k.</small>
             </div>
           </div>
@@ -79,20 +79,27 @@
                 <div id="fileSizeError" class="text-danger mt-2" style="display: none;">
                   Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
                 </div>
+                
+                <% if (statistic.icon && statistic.icon.startsWith('/uploads/')) { %>
+                  <div class="mt-2">
+                    <p>Mavjud ikonka:</p>
+                    <img src="<%= statistic.icon %>" alt="Ikonka" style="max-width: 100px; max-height: 100px;">
+                  </div>
+                <% } %>
               </div>
             </div>
             
             <div class="input-style-1 mb-4">
               <label for="icon">Ikonka URL (faylni yuklamasangiz)</label>
               <input type="text" name="icon" id="icon" placeholder="assets/images/fun-facts-1.png"
-                value="<%= typeof formData !== 'undefined' ? formData.icon || '' : '' %>">
+                value="<%= statistic.icon && !statistic.icon.startsWith('/uploads/') ? statistic.icon : '' %>">
               <small class="form-text text-muted">Ikonka uchun fayl yo'li yoki CSS klassi</small>
             </div>
             
             <div class="input-style-1 mb-4">
               <label for="description">Tavsif (Ixtiyoriy)</label>
               <input type="text" name="description" id="description" placeholder="Qo'shimcha ma'lumot"
-                value="<%= typeof formData !== 'undefined' ? formData.description || '' : '' %>">
+                value="<%= statistic.description || '' %>">
             </div>
           </div>
         </div>
@@ -102,7 +109,7 @@
             <div class="input-style-1 mb-4">
               <label for="order">Tartib</label>
               <input type="number" name="order" id="order" placeholder="0" min="0"
-                value="<%= typeof formData !== 'undefined' ? formData.order || '0' : '0' %>">
+                value="<%= statistic.order || 0 %>">
               <small class="form-text text-muted">Statistikalar tartibini belgilash uchun (Kichik raqam = Yuqoriroq joylashuv)</small>
             </div>
           </div>
@@ -113,11 +120,11 @@
                 <label>Holati</label>
                 <div>
                   <label class="radio-style-1 mb-2">
-                    <input type="radio" name="status" value="published" checked>
+                    <input type="radio" name="status" value="published" <%= statistic.status === 'published' ? 'checked' : '' %>>
                     <span>Chop etilgan</span>
                   </label>
                   <label class="radio-style-1">
-                    <input type="radio" name="status" value="draft" <%= typeof formData !== 'undefined' && formData.status === 'draft' ? 'checked' : '' %>>
+                    <input type="radio" name="status" value="draft" <%= statistic.status === 'draft' ? 'checked' : '' %>>
                     <span>Qoralama</span>
                   </label>
                 </div>

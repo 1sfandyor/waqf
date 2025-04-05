@@ -291,7 +291,50 @@ exports.postProfileUpdate = async (req, res) => {
 exports.uploadImage = async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'Rasm yuklanmadi' });
+      return res.status(400).json({ 
+        error: 'Rasm yuklanmadi',
+        message: 'Rasm yuklanmadi'
+      });
+    }
+    
+    // Faylni validatsiya qilish
+    const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedExtensions = /\.(jpg|jpeg|png|gif|webp)$/i;
+    const fileSize = req.file.size;
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    
+    // Fayl turini tekshirish
+    if (!allowedMimeTypes.includes(req.file.mimetype) || !allowedExtensions.test(req.file.originalname)) {
+      // Xato hosil bo'lsa, yuklangan faylni o'chirib tashlash
+      const fs = require('fs');
+      const path = require('path');
+      const filePath = path.join(process.cwd(), req.file.path);
+      
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      
+      return res.status(400).json({ 
+        error: 'Faqat rasm fayllari qabul qilinadi (JPG, JPEG, PNG, GIF, WebP)',
+        message: 'Faqat rasm fayllari qabul qilinadi (JPG, JPEG, PNG, GIF, WebP)' 
+      });
+    }
+    
+    // Fayl hajmini tekshirish
+    if (fileSize > maxSize) {
+      // Xato hosil bo'lsa, yuklangan faylni o'chirib tashlash
+      const fs = require('fs');
+      const path = require('path');
+      const filePath = path.join(process.cwd(), req.file.path);
+      
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      
+      return res.status(400).json({ 
+        error: `Rasm hajmi 5MB dan oshmasligi kerak`,
+        message: `Rasm hajmi 5MB dan oshmasligi kerak` 
+      });
     }
     
     // Create image URL
@@ -303,6 +346,9 @@ exports.uploadImage = async (req, res) => {
     });
   } catch (error) {
     console.error('Rasm yuklashda xatolik:', error);
-    return res.status(500).json({ error: 'Rasm yuklashda xatolik yuz berdi' });
+    return res.status(500).json({ 
+      error: 'Rasm yuklashda xatolik yuz berdi',
+      message: 'Rasm yuklashda xatolik yuz berdi' 
+    });
   }
 }; 

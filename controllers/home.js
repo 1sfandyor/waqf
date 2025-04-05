@@ -1,6 +1,8 @@
 const News = require('../models/News');
 const Slider = require('../models/Slider');
 const Activity = require('../models/Activity');
+const Statistic = require('../models/Statistic');
+const Campaign = require('../models/Campaign');
 
 // Bosh sahifa
 exports.getHomePage = async (req, res) => {
@@ -23,12 +25,23 @@ exports.getHomePage = async (req, res) => {
     // Faoliyatlarni yuklash
     const activities = await Activity.find({ status: 'published' }).sort({ order: 1 });
     
+    // Statistikalarni yuklash
+    const statistics = await Statistic.find({ status: 'published' }).sort({ order: 1 });
+    
+    // Faol kampaniyani yuklash
+    const activeCampaign = await Campaign.findOne({
+      active: true,
+      status: 'published'
+    }).sort({ order: 1 });
+    
     res.render('index', {
       title: 'Ezan Vakfı - Orta Asya halklarının infak eli',
       sliders,
       duyurular,
       latestNews,
-      activities
+      activities,
+      statistics,
+      activeCampaign
     });
     
   } catch (err) {
@@ -62,9 +75,7 @@ exports.getNewsPage = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5)
       .lean();
-    
-    console.log('Yangiliklar yuklandi:', news.length);
-    
+        
     // Sarlavha kategoriyaga qarab o'zgarishi
     let pageTitle = 'Yangiliklar - Ezan Vakfı';
     if (category === 'news') {

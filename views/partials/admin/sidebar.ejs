@@ -30,7 +30,7 @@
   <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/sliders')) { %>active<% } %>">
     <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_sliders" aria-controls="ddmenu_sliders" aria-expanded="false" aria-label="Toggle navigation">
       <span class="icon">
-        <i class="lni lni-slideshow"></i>
+        <i class="fa-solid fa-images"></i>
       </span>
       <span class="text">Slayderlar</span>
     </a>
@@ -77,6 +77,23 @@
       </span>
       <span class="text">Statistika</span>
     </a>
+  </li>
+
+  <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/campaigns')) { %>active<% } %>">
+    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_campaigns" aria-controls="ddmenu_campaigns" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="icon">
+        <i class="lni lni-gift"></i>
+      </span>
+      <span class="text">Maxsus takliflar</span>
+    </a>
+    <ul id="ddmenu_campaigns" class="collapse dropdown-nav">
+      <li>
+        <a href="/admin/campaigns" class="<% if (path === '/admin/campaigns') { %>active<% } %>">Barcha takliflar</a>
+      </li>
+      <li>
+        <a href="/admin/campaigns/create" class="<% if (path === '/admin/campaigns/create') { %>active<% } %>">Taklif qo'shish</a>
+      </li>
+    </ul>
   </li>
 
   <li class="nav-item nav-item-has-children <% if (path && path.startsWith('/admin/projects')) { %>active<% } %>">

@@ -1,0 +1,203 @@
+<%- include('../../partials/admin/header') %>
+
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Yangi maxsus taklif qo'shish</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/admin/dashboard">Bosh sahifa</a></li>
+            <li class="breadcrumb-item"><a href="/admin/campaigns">Maxsus takliflar</a></li>
+            <li class="breadcrumb-item active">Yangi taklif</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <% if(success_msg != ''){ %>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= success_msg %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% } %>
+
+          <% if(error_msg != ''){ %>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error_msg %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <% } %>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Yangi maxsus taklif ma'lumotlari</h3>
+            </div>
+            <div class="card-body">
+              <form action="/admin/campaigns/create" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="title">Sarlavha</label>
+                      <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <input type="hidden" id="description" name="description" value="Maxsus taklif" required>
+                    <div class="form-group">
+                      <label for="eventDate">Sana</label>
+                      <input type="datetime-local" class="form-control" id="eventDate" name="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="location">Manzil</label>
+                      <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-style-1 mb-4">
+                      <label for="leftImage">Chap taraf rasmi</label>
+                      <div class="custom-file-upload">
+                        <input type="file" name="leftImage" id="leftImage" class="form-control" accept="image/*" onchange="validateFileSize(this)">
+                        <small class="form-text text-muted">Kampaniya chap taraf rasmi (maks. 5MB)</small>
+                        <div id="leftImageError" class="text-danger mt-2" style="display: none;">
+                          Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="input-style-1 mb-4">
+                      <label for="rightImage">O'ng taraf rasmi</label>
+                      <div class="custom-file-upload">
+                        <input type="file" name="rightImage" id="rightImage" class="form-control" accept="image/*" onchange="validateFileSize(this)">
+                        <small class="form-text text-muted">Kampaniya o'ng taraf rasmi (maks. 5MB)</small>
+                        <div id="rightImageError" class="text-danger mt-2" style="display: none;">
+                          Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="buttonText">Tugma matni</label>
+                      <input type="text" class="form-control" id="buttonText" name="buttonText" value="Batafsil">
+                    </div>
+                    <div class="form-group">
+                      <label for="buttonLink">Tugma havolasi</label>
+                      <input type="text" class="form-control" id="buttonLink" name="buttonLink" value="#">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="order">Tartib raqami</label>
+                      <input type="number" class="form-control" id="order" name="order" value="0">
+                    </div>
+                    <div class="form-group">
+                      <label for="status">Holat</label>
+                      <select class="form-control" id="status" name="status">
+                        <option value="published">Chop etilgan</option>
+                        <option value="draft">Qoralama</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="active" name="active" checked>
+                        <label class="custom-control-label" for="active">Faol (ko'rsatiladi)</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Saqlash</button>
+                <a href="/admin/campaigns" class="btn btn-secondary">Bekor qilish</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%- include('../../partials/admin/footer') %>
+
+<script>
+  $(function () {
+    // Rasm preview uchun
+    function readURL(input, previewId) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function(e) {
+          let img = $('<img>').attr({
+            'src': e.target.result,
+            'width': 200,
+            'class': 'img-thumbnail'
+          });
+          $(previewId).html(img);
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    
+    // Chap rasm preview
+    $("#leftImage").change(function() {
+      readURL(this, "#leftImagePreview");
+    });
+    
+    // O'ng rasm preview
+    $("#rightImage").change(function() {
+      readURL(this, "#rightImagePreview");
+    });
+    
+    // Custom file input nomini ko'rsatish
+    bsCustomFileInput.init();
+  });
+
+  function validateFileSize(input) {
+    // Fayl tanlangan-tanlanmaganligini tekshirish
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    
+    const file = input.files[0];
+    const fileSize = file.size / 1024 / 1024; // MB da
+    const maxFileSize = 5; // 5MB
+    const errorId = input.id + 'Error';
+    const errorElement = document.getElementById(errorId);
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Fayl hajmini tekshirish
+    if (fileSize > maxFileSize) {
+      errorElement.style.display = 'block';
+      input.value = ''; // Faylni tozalash
+      // Sahifadagi barcha fayl xatolarini tekshirib, tugmani bloklash yoki ochish
+      checkAllFileErrors();
+    } else {
+      errorElement.style.display = 'none';
+      checkAllFileErrors();
+    }
+  }
+  
+  function checkAllFileErrors() {
+    // Sahifadagi barcha fayl xatolarini tekshirish
+    const errorElements = document.querySelectorAll('[id$="Error"]');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    let hasErrors = false;
+    errorElements.forEach(elem => {
+      if (elem.style.display !== 'none') {
+        hasErrors = true;
+      }
+    });
+    
+    // Agar xatolar bo'lsa, tugmani bloklash
+    submitButton.disabled = hasErrors;
+  }
+</script> 

@@ -108,9 +108,15 @@
           <div class="col-md-4">
             <div class="input-style-1 mb-4">
               <label for="image" class="required">Asosiy rasm</label>
-              <input type="file" name="image" id="image" class="form-control-file" accept="image/*" required>
-              <div class="mt-2 preview-container" style="display: none;">
-                <img src="" alt="Preview" class="img-preview img-fluid rounded">
+              <div class="custom-file-upload">
+                <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="validateFileSize(this)" required>
+                <small class="form-text text-muted">Yangilik asosiy rasmi (maks. 5MB)</small>
+                <div id="imageError" class="text-danger mt-2" style="display: none;">
+                  Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
+                </div>
+                <div class="mt-2 preview-container" style="display: none;">
+                  <img src="" alt="Preview" class="img-preview img-fluid rounded">
+                </div>
               </div>
             </div>
             
@@ -147,62 +153,140 @@
   </div>
 </div>
 
-<!-- TinyMCE skriptini qo'shish -->
+<!-- Fayl hajmini tekshirish funksiyasi -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  tinymce.init({
-      selector: 'textarea.tinymce-editor',
-      height: 500,
-      promotion: false,
-      plugins: [
-          // Core editing features
-          'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 
-          'searchreplace', 'table', 'visualblocks', 'wordcount',
-          // Premium features
-          'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 
-          'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 
-          'advtemplate', 'mentions', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 
-          'typography', 'inlinecss', 'markdown'
-      ],
-      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
-          'link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | ' +
-          'align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-      tinycomments_mode: 'embedded',
-      tinycomments_author: 'Admin',
-      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-      images_upload_url: '/admin/upload-image',
-      automatic_uploads: true,
-      file_picker_types: 'image',
-      end_container_on_empty_block: true,
-      br_in_pre: false,
-      forced_root_block: 'p',
-      keep_styles: true,
-      shift_enter_behavior: 'br',
-      file_picker_callback: function(cb, value, meta) {
-          var input = document.createElement('input');
-          input.setAttribute('type', 'file');
-          input.setAttribute('accept', 'image/*');
-          input.onchange = function() {
-              var file = this.files[0];
-              
-              var reader = new FileReader();
-              reader.onload = function () {
-                  var id = 'blobid' + (new Date()).getTime();
-                  var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                  var base64 = reader.result.split(',')[1];
-                  var blobInfo = blobCache.create(id, file, base64);
-                  blobCache.add(blobInfo);
-                  
-                  // Call the callback and populate the Title field with the file name
-                  cb(blobInfo.blobUri(), { title: file.name });
-              };
-              reader.readAsDataURL(file);
-          };
-          
-          input.click();
+  function validateFileSize(input) {
+    // Fayl tanlangan-tanlanmaganligini tekshirish
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    
+    const file = input.files[0];
+    const fileSize = file.size / 1024 / 1024; // MB da
+    const maxFileSize = 5; // 5MB
+    const errorId = input.id + 'Error';
+    const errorElement = document.getElementById(errorId);
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Fayl hajmini tekshirish
+    if (fileSize > maxFileSize) {
+      errorElement.style.display = 'block';
+      input.value = ''; // Faylni tozalash
+      
+      // Sahifadagi barcha fayl xatolarini tekshirib, tugmani bloklash yoki ochish
+      checkAllFileErrors();
+    } else {
+      errorElement.style.display = 'none';
+      checkAllFileErrors();
+      
+      // Agar fayl to'g'ri bo'lsa va bu input uchun previewContainer mavjud bo'lsa
+      if (input.id === 'image') {
+        const previewContainer = document.querySelector('.preview-container');
+        const imgPreview = document.querySelector('.img-preview');
+        
+        if (previewContainer && imgPreview) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imgPreview.src = e.target.result;
+            previewContainer.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+        }
       }
-  });
-})
-  </script>
+    }
+  }
+  
+  function checkAllFileErrors() {
+    // Sahifadagi barcha fayl xatolarini tekshirish
+    const errorElements = document.querySelectorAll('[id$="Error"]');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    let hasErrors = false;
+    errorElements.forEach(elem => {
+      if (elem.style.display !== 'none') {
+        hasErrors = true;
+      }
+    });
+    
+    // Agar xatolar bo'lsa, tugmani bloklash
+    submitButton.disabled = hasErrors;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Rasm preview uchun
+    const imageInput = document.getElementById('image');
+    const previewContainer = document.querySelector('.preview-container');
+    const imgPreview = document.querySelector('.img-preview');
+    
+    imageInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          imgPreview.src = e.target.result;
+          previewContainer.style.display = 'block';
+        }
+        
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        previewContainer.style.display = 'none';
+      }
+    });
+
+    // TinyMCE uchun kod...
+    tinymce.init({
+        selector: 'textarea.tinymce-editor',
+        height: 500,
+        promotion: false,
+        plugins: [
+            // Core editing features
+            'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 
+            'searchreplace', 'table', 'visualblocks', 'wordcount',
+            // Premium features
+            'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 
+            'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 
+            'advtemplate', 'mentions', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 
+            'typography', 'inlinecss', 'markdown'
+        ],
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
+            'link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | ' +
+            'align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        tinycomments_author: 'Admin',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+        images_upload_url: '/admin/upload-image',
+        automatic_uploads: true,
+        file_picker_types: 'image',
+        end_container_on_empty_block: true,
+        br_in_pre: false,
+        forced_root_block: 'p',
+        keep_styles: true,
+        shift_enter_behavior: 'br',
+        file_picker_callback: function(cb, value, meta) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
+            input.onchange = function() {
+                var file = this.files[0];
+                
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var id = 'blobid' + (new Date()).getTime();
+                    var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(',')[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    
+                    // Call the callback and populate the Title field with the file name
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+                reader.readAsDataURL(file);
+            };
+            
+            input.click();
+        }
+    });
+  })
+</script>
 
 <%- include('../../partials/admin/footer') %> 

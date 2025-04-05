@@ -5,6 +5,7 @@ const galleryController = require('../controllers/galleryController');
 const sliderController = require('../controllers/sliderController');
 const activityController = require('../controllers/activityController');
 const statisticController = require('../controllers/statisticController');
+const campaignController = require('../controllers/campaignController');
 const News = require('../models/News');
 const Gallery = require('../models/Gallery');
 const Project = require('../models/Project');
@@ -15,6 +16,8 @@ router.get('/news', newsController.getNewsApi);
 router.get('/news/:slug', newsController.getNewsDetailApi);
 router.get('/galleries', galleryController.getGalleriesApi);
 router.get('/galleries/:id', galleryController.getGalleryDetailApi);
+router.get('/statistics', statisticController.getStatisticsApi);
+router.get('/campaigns/active', campaignController.getActiveCampaign);
 
 // Gallery API endpoints - commented out due to function name mismatch
 // router.get('/gallery', galleryController.getPublishedGalleries);

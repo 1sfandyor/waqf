@@ -89,15 +89,21 @@
           <div class="col-md-4">
             <div class="input-style-1 mb-4">
               <label for="image">Asosiy rasm</label>
-              <% if (news.image) { %>
-                <div class="mb-3">
-                  <img src="<%= news.image %>" alt="<%= news.title %>" class="img-fluid rounded" style="max-height: 200px;">
-                  <p class="text-sm text-medium mt-2">Yangi rasm yuklamasangiz, mavjud rasm saqlanadi</p>
+              <div class="custom-file-upload">
+                <% if (news.image) { %>
+                  <div class="mb-3">
+                    <img src="<%= news.image %>" alt="<%= news.title %>" class="img-fluid rounded" style="max-height: 200px;">
+                    <p class="text-sm text-medium mt-2">Yangi rasm yuklamasangiz, mavjud rasm saqlanadi</p>
+                  </div>
+                <% } %>
+                <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="validateFileSize(this)">
+                <small class="form-text text-muted">Yangilik asosiy rasmi (maks. 5MB)</small>
+                <div id="imageError" class="text-danger mt-2" style="display: none;">
+                  Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
                 </div>
-              <% } %>
-              <input type="file" name="image" id="image" class="form-control-file" accept="image/*">
-              <div class="mt-2 preview-container" style="display: none;">
-                <img src="" alt="Preview" class="img-preview img-fluid rounded">
+                <div class="mt-2 preview-container" style="display: none;">
+                  <img src="" alt="Preview" class="img-preview img-fluid rounded">
+                </div>
               </div>
             </div>
             
@@ -138,19 +144,62 @@
 <%- include('../../partials/admin/footer') %>
 
 <script>
-  // Rasm oldindan ko'rish
-  document.getElementById('image').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.querySelector('.img-preview');
-        img.src = e.target.result;
-        document.querySelector('.preview-container').style.display = 'block';
-      }
-      reader.readAsDataURL(file);
+  function validateFileSize(input) {
+    // Fayl tanlangan-tanlanmaganligini tekshirish
+    if (!input.files || input.files.length === 0) {
+      return;
     }
-  });
+    
+    const file = input.files[0];
+    const fileSize = file.size / 1024 / 1024; // MB da
+    const maxFileSize = 5; // 5MB
+    const errorId = input.id + 'Error';
+    const errorElement = document.getElementById(errorId);
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Fayl hajmini tekshirish
+    if (fileSize > maxFileSize) {
+      errorElement.style.display = 'block';
+      input.value = ''; // Faylni tozalash
+      
+      // Sahifadagi barcha fayl xatolarini tekshirib, tugmani bloklash yoki ochish
+      checkAllFileErrors();
+    } else {
+      errorElement.style.display = 'none';
+      checkAllFileErrors();
+      
+      // Agar fayl to'g'ri bo'lsa va bu input uchun previewContainer mavjud bo'lsa
+      if (input.id === 'image') {
+        const previewContainer = document.querySelector('.preview-container');
+        const imgPreview = document.querySelector('.img-preview');
+        
+        if (previewContainer && imgPreview) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imgPreview.src = e.target.result;
+            previewContainer.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  }
+  
+  function checkAllFileErrors() {
+    // Sahifadagi barcha fayl xatolarini tekshirish
+    const errorElements = document.querySelectorAll('[id$="Error"]');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    let hasErrors = false;
+    errorElements.forEach(elem => {
+      if (elem.style.display !== 'none') {
+        hasErrors = true;
+      }
+    });
+    
+    // Agar xatolar bo'lsa, tugmani bloklash
+    submitButton.disabled = hasErrors;
+  }
   
   // TinyMCE editor konfiguratsiyasi
   tinymce.init({

@@ -9,6 +9,7 @@ const passport = require('passport');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const News = require('./models/News'); // News modelini import qilish
+const { handleMulterErrors } = require('./middleware/fileValidation');
 
 // Initialize express app
 const app = express();
@@ -79,6 +80,9 @@ app.use((req, res, next) => {
 app.use('/', require('./routes/index'));
 app.use('/admin', require('./routes/admin'));
 app.use('/api', require('./routes/api'));
+
+// Handle Multer errors - xatolik o'lchamidan katta fayllarda
+app.use(handleMulterErrors);
 
 // Error handling middleware
 app.use((req, res, next) => {

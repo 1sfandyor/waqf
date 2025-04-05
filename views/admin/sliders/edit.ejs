@@ -109,16 +109,23 @@
             </div>
 
             <!-- Rasm sarlavha -->
-            <div class="input-style-1 mb-3" id="titleImageBlock" style="<%= !slider.titleImage ? 'display:none;' : '' %>">
-              <label>Sarlavha rasmi (ixtiyoriy)</label>
-              <input type="file" name="titleImage" accept="image/*" class="form-control">
-              <small class="text-muted">Tavsiya etilgan o'lcham: 400x152. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
-              <div class="mt-2">
-                <% if (slider.titleImage) { %>
-                  <img id="titleImagePreview" src="<%= slider.titleImage %>" alt="Joriy sarlavha rasmi" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
-                <% } else { %>
-                  <img id="titleImagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+            <div class="input-style-1 mb-4">
+              <label for="titleImage">Sarlavha rasmi</label>
+              <div class="custom-file-upload">
+                <% if (slider.titleType === 'image' && slider.titleImage) { %>
+                  <div class="mb-3">
+                    <img src="<%= slider.titleImage %>" alt="Sarlavha rasmi" class="img-fluid rounded" style="max-height: 100px;">
+                    <p class="text-sm text-medium mt-2">Yangi rasm yuklamasangiz, mavjud rasm saqlanadi</p>
+                  </div>
                 <% } %>
+                <input type="file" name="titleImage" id="titleImage" accept="image/*" class="form-control" onchange="validateFileSize(this)">
+                <small class="form-text text-muted">Slayder sarlavhasini rasm sifatida ko'rsatish uchun (maks. 5MB)</small>
+                <div id="titleImageError" class="text-danger mt-2" style="display: none;">
+                  Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
+                </div>
+                <div class="preview-titleImage mt-2" style="display: none;">
+                  <img src="" alt="Sarlavha rasmi" class="img-fluid rounded" style="max-height: 100px;">
+                </div>
               </div>
             </div>
 
@@ -159,16 +166,23 @@
           </div>
 
           <div class="col-md-4">
-            <div class="input-style-1 mb-3">
-              <label>Rasm</label>
-              <input type="file" id="image" name="image" accept="image/*" class="form-control">
-              <small class="text-muted">Tavsiya etilgan o'lcham: 1920x780. Yangi rasm yuklamasangiz, avvalgi rasm saqlanadi.</small>
-              <div class="mt-2">
+            <div class="input-style-1 mb-4">
+              <label for="image" class="required">Slayder rasmi</label>
+              <div class="custom-file-upload">
                 <% if (slider.image) { %>
-                  <img id="imagePreview" src="<%= slider.image %>" alt="Joriy rasm" style="max-width: 100%; border: 1px solid #ddd; padding: 5px;">
-                <% } else { %>
-                  <img id="imagePreview" src="#" alt="Oldindan ko'rish" style="max-width: 100%; display: none;">
+                  <div class="mb-3">
+                    <img src="<%= slider.image %>" alt="Slayder rasmi" class="img-fluid rounded" style="max-height: 200px;">
+                    <p class="text-sm text-medium mt-2">Yangi rasm yuklamasangiz, mavjud rasm saqlanadi</p>
+                  </div>
                 <% } %>
+                <input type="file" id="image" name="image" accept="image/*" class="form-control" onchange="validateFileSize(this)">
+                <small class="form-text text-muted">Slayder asosiy rasmi (maks. 5MB)</small>
+                <div id="imageError" class="text-danger mt-2" style="display: none;">
+                  Fayl hajmi juda katta! Maksimal ruxsat etilgan hajm: 5MB
+                </div>
+                <div class="preview-image mt-2" style="display: none;">
+                  <img src="" alt="Slayder rasmi" class="img-fluid rounded" style="max-height: 200px;">
+                </div>
               </div>
             </div>
           </div>
@@ -188,26 +202,69 @@
 
 <script>
   // Rasm oldindan ko'rish
-  document.getElementById('image').onchange = function(event) {
-    var reader = new FileReader();
-    reader.onload = function() {
-      var output = document.getElementById('imagePreview');
-      output.src = reader.result;
-      output.style.display = 'block';
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  };
-
-  // Sarlavha rasm oldindan ko'rish
-  document.getElementById('titleImage').onchange = function(event) {
-    var reader = new FileReader();
-    reader.onload = function() {
-      var output = document.getElementById('titleImagePreview');
-      output.src = reader.result;
-      output.style.display = 'block';
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  };
+  function displayImagePreview(input, previewClass) {
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const previewContainer = document.querySelector('.' + previewClass);
+        if (previewContainer) {
+          const img = previewContainer.querySelector('img');
+          img.src = e.target.result;
+          previewContainer.style.display = 'block';
+        }
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+  
+  function validateFileSize(input) {
+    // Fayl tanlangan-tanlanmaganligini tekshirish
+    if (!input.files || input.files.length === 0) {
+      return;
+    }
+    
+    const file = input.files[0];
+    const fileSize = file.size / 1024 / 1024; // MB da
+    const maxFileSize = 5; // 5MB
+    const errorId = input.id + 'Error';
+    const errorElement = document.getElementById(errorId);
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    // Fayl hajmini tekshirish
+    if (fileSize > maxFileSize) {
+      errorElement.style.display = 'block';
+      input.value = ''; // Faylni tozalash
+      
+      // Sahifadagi barcha fayl xatolarini tekshirib, tugmani bloklash yoki ochish
+      checkAllFileErrors();
+    } else {
+      errorElement.style.display = 'none';
+      checkAllFileErrors();
+      
+      // Rasm preview
+      if (input.id === 'image') {
+        displayImagePreview(input, 'preview-image');
+      } else if (input.id === 'titleImage') {
+        displayImagePreview(input, 'preview-titleImage');
+      }
+    }
+  }
+  
+  function checkAllFileErrors() {
+    // Sahifadagi barcha fayl xatolarini tekshirish
+    const errorElements = document.querySelectorAll('[id$="Error"]');
+    const submitButton = document.querySelector('button[type="submit"]');
+    
+    let hasErrors = false;
+    errorElements.forEach(elem => {
+      if (elem.style.display !== 'none') {
+        hasErrors = true;
+      }
+    });
+    
+    // Agar xatolar bo'lsa, tugmani bloklash
+    submitButton.disabled = hasErrors;
+  }
 
   // Sarlavha turini almashtirish
   function toggleTitleType() {
